@@ -136,6 +136,7 @@ export default function WorkoutPlayer({ exercicios, onFinish, onClose }) {
             gainNode.connect(context.destination);
             osc.start();
             osc.stop(context.currentTime + 0.5);
+            if ('vibrate' in navigator) navigator.vibrate([200, 100, 200, 100, 500]);
         } catch (e) {
             console.log("Audio not supported or blocked");
         }
@@ -246,7 +247,7 @@ export default function WorkoutPlayer({ exercicios, onFinish, onClose }) {
                 <div className="text-xs font-bold uppercase tracking-widest text-zinc-400">
                     {currentIndex + 1} <span className="text-zinc-600">/</span> {flatSets.length} Series
                 </div>
-                <button onClick={onClose} className="p-2 text-zinc-400 hover:text-white transition-colors bg-zinc-800/50 rounded-full"><X className="w-4 h-4" /></button>
+                <button onClick={() => { if (window.confirm('🚨 Tem certeza que deseja abortar o treino? Todo o log não salvo desta sessão será perdido.')) onClose(); }} className="p-2 text-zinc-400 hover:text-white transition-colors bg-zinc-800/50 rounded-full"><X className="w-4 h-4" /></button>
             </div>
 
             {/* Video / Visual */}
@@ -313,6 +314,7 @@ export default function WorkoutPlayer({ exercicios, onFinish, onClose }) {
                         <div className="flex z-10 items-center justify-center gap-1 w-full relative">
                             <input
                                 type="text"
+                                inputMode="decimal"
                                 value={cargaReal}
                                 onChange={(e) => setCargaReal(e.target.value)}
                                 className="bg-transparent text-2xl font-black text-white outline-none w-20 text-center relative z-10 border-b-2 border-transparent focus:border-zinc-500 transition-colors"
