@@ -242,8 +242,8 @@ export default function WorkoutPlayer({ exercicios, onFinish, onClose }) {
 
     return (
         <div className="fixed inset-0 z-[150] bg-zinc-900 flex flex-col max-w-md mx-auto">
-            {/* Header Reduzido */}
-            <div className="h-14 flex items-center px-4 shrink-0 border-b border-zinc-800 relative justify-between">
+            {/* Header Reduzido com Safe Area */}
+            <div className="h-[calc(3.5rem+env(safe-area-inset-top))] pt-[env(safe-area-inset-top)] flex items-center px-4 shrink-0 border-b border-zinc-800 relative justify-between">
                 <div className="text-xs font-bold uppercase tracking-widest text-zinc-400">
                     {currentIndex + 1} <span className="text-zinc-600">/</span> {flatSets.length} Series
                 </div>
