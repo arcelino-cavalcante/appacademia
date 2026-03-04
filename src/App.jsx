@@ -159,7 +159,7 @@ export default function App() {
     const [novoMetodo, setNovoMetodo] = useState('Padrão');
     const [isAdvancedMode, setIsAdvancedMode] = useState(false);
     const [advancedSets, setAdvancedSets] = useState([
-        { id: 1, reps: '', carga: '', descanso: '', metodo: '', tipoSerie: 'Padrão' }
+        { id: 1, reps: '', carga: '', descanso: '', cadencia: '', metodo: '', tipoSerie: 'Padrão' }
     ]);
     const metodosTreino = ['Padrão', 'Drop Set', 'Rest-Pause', 'Pico de Contração', 'Isometria', 'Bi-set', 'FST-7', 'Pirâmide', 'Até a Falha'];
     const tiposDeSerie = ['Padrão', '🟢 Warm-up', '🟡 Feeder', '🔴 Top Set', '🔵 Back-off'];
@@ -836,7 +836,7 @@ export default function App() {
         setEditingExercicioId(ex.id);
         setSelectedApiExercise({ name: ex.nome, video: ex.video });
         setIsAdvancedMode(ex.isAdvanced);
-        setAdvancedSets(ex.advancedSets && ex.advancedSets.length > 0 ? ex.advancedSets : [{ id: 1, reps: '', carga: '', descanso: '', metodo: '', tipoSerie: 'Padrão' }]);
+        setAdvancedSets(ex.advancedSets && ex.advancedSets.length > 0 ? ex.advancedSets : [{ id: 1, reps: '', carga: '', descanso: '', cadencia: '', metodo: '', tipoSerie: 'Padrão' }]);
         setNovasSeries(ex.series !== 'Varia' ? ex.series : '');
         setNovasReps(ex.reps !== 'Varia' ? ex.reps : '');
         setNovaCarga(ex.carga !== 'Varia' ? ex.carga : '');
@@ -918,12 +918,12 @@ export default function App() {
         }
 
         setNovasSeries(''); setNovasReps(''); setNovaCarga(''); setNovoDescanso(''); setNovoMetodo('Padrão');
-        setIsAdvancedMode(false); setAdvancedSets([{ id: 1, reps: '', carga: '', descanso: '', metodo: '' }]);
+        setIsAdvancedMode(false); setAdvancedSets([{ id: 1, reps: '', carga: '', descanso: '', cadencia: '', metodo: '' }]);
         setSelectedApiExercise(null); setIsExerciseConfigOpen(false);
         setEditingExercicioId(null);
     };
 
-    const handleAddAdvancedSet = () => setAdvancedSets([...advancedSets, { id: Date.now(), reps: '', carga: '', descanso: '', metodo: '', tipoSerie: 'Padrão' }]);
+    const handleAddAdvancedSet = () => setAdvancedSets([...advancedSets, { id: Date.now(), reps: '', carga: '', descanso: '', cadencia: '', metodo: '', tipoSerie: 'Padrão' }]);
     const handleRemoveAdvancedSet = (id) => { if (advancedSets.length > 1) setAdvancedSets(advancedSets.filter(s => s.id !== id)); };
     const handleUpdateAdvancedSet = (id, field, value) => setAdvancedSets(advancedSets.map(s => s.id === id ? { ...s, [field]: value } : s));
 
@@ -1690,7 +1690,7 @@ Nota para metodo: pode ser 'Padrão', 'Drop Set', 'Rest-Pause', 'FST-7', 'Bi-set
             {isExerciseConfigOpen && selectedApiExercise && (
                 <div className="fixed inset-0 bg-white z-[110] flex flex-col max-w-md mx-auto">
                     <header className="h-16 bg-zinc-900 flex items-center px-4 shadow-md flex-shrink-0 relative">
-                        <button onClick={() => { setIsExerciseConfigOpen(false); setIsExerciseSelectionOpen(true); setIsAdvancedMode(false); setAdvancedSets([{ id: 1, reps: '', carga: '', descanso: '', metodo: '' }]); }} className="absolute left-2 p-2 text-white hover:bg-zinc-800 transition-colors z-10"><ArrowLeft className="w-6 h-6" /></button>
+                        <button onClick={() => { setIsExerciseConfigOpen(false); setIsExerciseSelectionOpen(true); setIsAdvancedMode(false); setAdvancedSets([{ id: 1, reps: '', carga: '', descanso: '', cadencia: '', metodo: '' }]); }} className="absolute left-2 p-2 text-white hover:bg-zinc-800 transition-colors z-10"><ArrowLeft className="w-6 h-6" /></button>
                         <h1 className="text-sm font-bold uppercase tracking-widest text-white truncate w-full text-center">Configurar Exercício</h1>
                     </header>
                     <div className="flex-1 overflow-y-auto pb-24">
@@ -1723,10 +1723,11 @@ Nota para metodo: pode ser 'Padrão', 'Drop Set', 'Rest-Pause', 'FST-7', 'Bi-set
                                 {advancedSets.map((set, index) => (
                                     <div key={set.id} className="bg-zinc-50 border border-zinc-200 p-3">
                                         <div className="flex justify-between items-center mb-3"><span className="text-[10px] font-bold uppercase tracking-widest text-zinc-900">Série {index + 1}</span>{advancedSets.length > 1 && <button onClick={() => handleRemoveAdvancedSet(set.id)} className="text-zinc-400 hover:text-red-500 transition-colors p-1"><Trash2 className="w-4 h-4" /></button>}</div>
-                                        <div className="flex gap-2">
-                                            <input type="text" placeholder="Reps" value={set.reps} onChange={(e) => handleUpdateAdvancedSet(set.id, 'reps', e.target.value)} className="w-1/3 bg-white border border-zinc-200 px-2 py-2 text-xs outline-none focus:border-zinc-900 transition-colors rounded-none placeholder-zinc-400 font-medium text-center" />
-                                            <input type="text" placeholder="Carga" value={set.carga} onChange={(e) => handleUpdateAdvancedSet(set.id, 'carga', e.target.value)} className="w-1/3 bg-white border border-zinc-200 px-2 py-2 text-xs outline-none focus:border-zinc-900 transition-colors rounded-none placeholder-zinc-400 font-medium text-center" />
-                                            <input type="text" placeholder="Descanso" value={set.descanso} onChange={(e) => handleUpdateAdvancedSet(set.id, 'descanso', e.target.value)} className="w-1/3 bg-white border border-zinc-200 px-2 py-2 text-xs outline-none focus:border-zinc-900 transition-colors rounded-none placeholder-zinc-400 font-medium text-center" />
+                                        <div className="flex gap-1.5">
+                                            <input type="text" placeholder="Reps" value={set.reps} onChange={(e) => handleUpdateAdvancedSet(set.id, 'reps', e.target.value)} className="w-1/4 bg-white border border-zinc-200 px-1 py-2 text-xs outline-none focus:border-zinc-900 transition-colors rounded-none placeholder-zinc-400 font-medium text-center" />
+                                            <input type="text" placeholder="Cg(kg)" value={set.carga} onChange={(e) => handleUpdateAdvancedSet(set.id, 'carga', e.target.value)} className="w-1/4 bg-white border border-zinc-200 px-1 py-2 text-xs outline-none focus:border-zinc-900 transition-colors rounded-none placeholder-zinc-400 font-medium text-center" />
+                                            <input type="text" placeholder="Desc" value={set.descanso} onChange={(e) => handleUpdateAdvancedSet(set.id, 'descanso', e.target.value)} className="w-1/4 bg-white border border-zinc-200 px-1 py-2 text-xs outline-none focus:border-zinc-900 transition-colors rounded-none placeholder-zinc-400 font-medium text-center" />
+                                            <input type="text" placeholder="Cad" value={set.cadencia || ''} onChange={(e) => handleUpdateAdvancedSet(set.id, 'cadencia', e.target.value)} className="w-1/4 bg-white border border-zinc-200 px-1 py-2 text-xs outline-none focus:border-zinc-900 transition-colors rounded-none placeholder-zinc-400 font-medium text-center" />
                                         </div>
                                         <div className="grid grid-cols-2 gap-2 mt-2">
                                             <div className="relative border border-zinc-200 bg-white">

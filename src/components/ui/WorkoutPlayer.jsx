@@ -264,8 +264,8 @@ export default function WorkoutPlayer({ exercicios, onFinish, onClose }) {
             {/* Infos e Inputs */}
             <div className="flex-1 overflow-y-auto bg-zinc-900 px-5 pt-6 pb-24">
 
-                {/* Metodos */}
-                {(currentSet.metodo || currentSet.rir !== '-' || currentSet.detalheMetodo) && (
+                {/* Metodos e Cadencia */}
+                {(currentSet.metodo || currentSet.rir !== '-' || currentSet.detalheMetodo || currentSet.cadencia) && (
                     <div className="mb-6 bg-zinc-800/80 border border-zinc-700 p-3 rounded-lg flex flex-col gap-2">
                         {currentSet.metodo && currentSet.metodo !== 'Padrão' && (
                             <div className="flex items-center gap-2">
@@ -274,12 +274,18 @@ export default function WorkoutPlayer({ exercicios, onFinish, onClose }) {
                             </div>
                         )}
                         {currentSet.detalheMetodo && currentSet.detalheMetodo !== '-' && currentSet.detalheMetodo !== 'Varia' && (
-                            <div className="text-orange-400 text-xs font-bold uppercase tracking-widest pl-6">↳ {currentSet.detalheMetodo}</div>
+                            <div className="text-orange-400 text-[10px] font-bold uppercase tracking-widest pl-6">↳ {currentSet.detalheMetodo}</div>
                         )}
                         {currentSet.rir !== '-' && currentSet.rir !== 'Varia' && (
-                            <div className="flex items-center gap-2 pt-2 border-t border-zinc-700 mt-1">
+                            <div className="flex items-center justify-between pt-2 border-t border-zinc-700 mt-1">
                                 <span className="text-zinc-400 text-[10px] font-bold uppercase tracking-widest">Alvo RIR:</span>
                                 <span className="text-white font-bold">{currentSet.rir}</span>
+                            </div>
+                        )}
+                        {currentSet.cadencia && currentSet.cadencia !== '-' && currentSet.cadencia !== 'Varia' && (
+                            <div className="flex items-center justify-between pt-2 border-t border-zinc-700 mt-1">
+                                <span className="text-zinc-400 text-[10px] font-bold uppercase tracking-widest flex items-center gap-1"><Timer className="w-3 h-3" /> Cadência (TUT):</span>
+                                <span className="text-white font-black tracking-widest">{currentSet.cadencia}</span>
                             </div>
                         )}
                     </div>

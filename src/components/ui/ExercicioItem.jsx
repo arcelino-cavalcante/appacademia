@@ -48,10 +48,11 @@ export function ExercicioItem({ nome, series, reps, carga, descanso, metodo, vid
                                             {set.tipoSerie && set.tipoSerie !== 'Padrão' && <span className="text-[9px] font-bold tracking-tight mt-0.5 leading-none whitespace-nowrap overflow-visible" style={{ color: set.tipoSerie.includes('Warm-up') ? '#22c55e' : set.tipoSerie.includes('Feeder') ? '#eab308' : set.tipoSerie.includes('Top Set') ? '#ef4444' : '#3b82f6' }}>{set.tipoSerie}</span>}
                                             {set.metodo && <span className="text-[8px] text-zinc-300 uppercase tracking-widest leading-tight mt-0.5">{set.metodo}</span>}
                                         </div>
-                                        <div className="flex flex-1 justify-between gap-2">
-                                            <span className={`text-[10px] uppercase tracking-wider font-bold ${set.metodo ? 'text-zinc-400' : 'text-zinc-500'}`}>Rep: <span className={set.metodo ? 'text-white' : 'text-zinc-900'}>{set.reps || '-'}</span></span>
-                                            <span className={`text-[10px] uppercase tracking-wider font-bold ${set.metodo ? 'text-zinc-400' : 'text-zinc-500'}`}>Cg: <span className={set.metodo ? 'text-white' : 'text-zinc-900'}>{set.carga || '-'}</span></span>
-                                            <span className={`text-[10px] uppercase tracking-wider font-bold ${set.metodo ? 'text-zinc-400' : 'text-zinc-500'}`}>Desc: <span className={set.metodo ? 'text-white' : 'text-zinc-900'}>{set.descanso || '-'}</span></span>
+                                        <div className="flex flex-1 justify-between gap-1 flex-wrap text-right">
+                                            <span className={`text-[9px] uppercase tracking-wider font-bold ${set.metodo ? 'text-zinc-400' : 'text-zinc-500'}`}>Rep: <span className={set.metodo ? 'text-white' : 'text-zinc-900'}>{set.reps || '-'}</span></span>
+                                            <span className={`text-[9px] uppercase tracking-wider font-bold ${set.metodo ? 'text-zinc-400' : 'text-zinc-500'}`}>Cg: <span className={set.metodo ? 'text-white' : 'text-zinc-900'}>{set.carga || '-'}</span></span>
+                                            <span className={`text-[9px] uppercase tracking-wider font-bold ${set.metodo ? 'text-zinc-400' : 'text-zinc-500'}`}>Desc: <span className={set.metodo ? 'text-white' : 'text-zinc-900'}>{set.descanso || '-'}</span></span>
+                                            <span className={`text-[9px] uppercase tracking-wider font-bold ${set.metodo ? 'text-zinc-400' : 'text-zinc-500'}`}>TUT: <span className={set.metodo ? 'text-white' : 'text-zinc-900'}>{set.cadencia || '-'}</span></span>
                                         </div>
                                     </div>
                                     {(set.rir || set.detalheMetodo) && (
