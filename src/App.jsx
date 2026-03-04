@@ -159,9 +159,10 @@ export default function App() {
     const [novoMetodo, setNovoMetodo] = useState('Padrão');
     const [isAdvancedMode, setIsAdvancedMode] = useState(false);
     const [advancedSets, setAdvancedSets] = useState([
-        { id: 1, reps: '', carga: '', descanso: '', metodo: '' }
+        { id: 1, reps: '', carga: '', descanso: '', metodo: '', tipoSerie: 'Padrão' }
     ]);
     const metodosTreino = ['Padrão', 'Drop Set', 'Rest-Pause', 'Pico de Contração', 'Isometria', 'Bi-set', 'FST-7', 'Pirâmide', 'Até a Falha'];
+    const tiposDeSerie = ['Padrão', '🟢 Warm-up', '🟡 Feeder', '🔴 Top Set', '🔵 Back-off'];
 
     // --- Estados de Edição CRUD ---
     const [editingStudentId, setEditingStudentId] = useState(null);
@@ -835,7 +836,7 @@ export default function App() {
         setEditingExercicioId(ex.id);
         setSelectedApiExercise({ name: ex.nome, video: ex.video });
         setIsAdvancedMode(ex.isAdvanced);
-        setAdvancedSets(ex.advancedSets && ex.advancedSets.length > 0 ? ex.advancedSets : [{ id: 1, reps: '', carga: '', descanso: '', metodo: '' }]);
+        setAdvancedSets(ex.advancedSets && ex.advancedSets.length > 0 ? ex.advancedSets : [{ id: 1, reps: '', carga: '', descanso: '', metodo: '', tipoSerie: 'Padrão' }]);
         setNovasSeries(ex.series !== 'Varia' ? ex.series : '');
         setNovasReps(ex.reps !== 'Varia' ? ex.reps : '');
         setNovaCarga(ex.carga !== 'Varia' ? ex.carga : '');
@@ -922,7 +923,7 @@ export default function App() {
         setEditingExercicioId(null);
     };
 
-    const handleAddAdvancedSet = () => setAdvancedSets([...advancedSets, { id: Date.now(), reps: '', carga: '', descanso: '', metodo: '' }]);
+    const handleAddAdvancedSet = () => setAdvancedSets([...advancedSets, { id: Date.now(), reps: '', carga: '', descanso: '', metodo: '', tipoSerie: 'Padrão' }]);
     const handleRemoveAdvancedSet = (id) => { if (advancedSets.length > 1) setAdvancedSets(advancedSets.filter(s => s.id !== id)); };
     const handleUpdateAdvancedSet = (id, field, value) => setAdvancedSets(advancedSets.map(s => s.id === id ? { ...s, [field]: value } : s));
 
@@ -1727,10 +1728,17 @@ Nota para metodo: pode ser 'Padrão', 'Drop Set', 'Rest-Pause', 'FST-7', 'Bi-set
                                             <input type="text" placeholder="Carga" value={set.carga} onChange={(e) => handleUpdateAdvancedSet(set.id, 'carga', e.target.value)} className="w-1/3 bg-white border border-zinc-200 px-2 py-2 text-xs outline-none focus:border-zinc-900 transition-colors rounded-none placeholder-zinc-400 font-medium text-center" />
                                             <input type="text" placeholder="Descanso" value={set.descanso} onChange={(e) => handleUpdateAdvancedSet(set.id, 'descanso', e.target.value)} className="w-1/3 bg-white border border-zinc-200 px-2 py-2 text-xs outline-none focus:border-zinc-900 transition-colors rounded-none placeholder-zinc-400 font-medium text-center" />
                                         </div>
-                                        <div className="relative border border-zinc-200 bg-white mt-2">
-                                            <select value={set.metodo} onChange={(e) => handleUpdateAdvancedSet(set.id, 'metodo', e.target.value)} className="w-full bg-transparent px-2 py-2 text-[10px] outline-none focus:ring-1 focus:ring-zinc-900 rounded-none font-bold uppercase tracking-widest text-zinc-600 appearance-none cursor-pointer text-center">
-                                                <option value="">+ Adicionar Técnica</option>{metodosTreino.filter(m => m !== 'Padrão').map(m => (<option key={m} value={m}>{m}</option>))}
-                                            </select><div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-zinc-400"><ChevronRight className="w-4 h-4 rotate-90" /></div>
+                                        <div className="grid grid-cols-2 gap-2 mt-2">
+                                            <div className="relative border border-zinc-200 bg-white">
+                                                <select value={set.tipoSerie || 'Padrão'} onChange={(e) => handleUpdateAdvancedSet(set.id, 'tipoSerie', e.target.value)} className="w-full bg-transparent px-2 py-2 text-[10px] outline-none focus:ring-1 focus:ring-zinc-900 rounded-none font-bold uppercase tracking-widest text-zinc-600 appearance-none cursor-pointer text-center">
+                                                    {tiposDeSerie.map(t => (<option key={t} value={t}>{t === 'Padrão' ? '+ Tipo Série' : t}</option>))}
+                                                </select><div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-zinc-400"><ChevronRight className="w-4 h-4 rotate-90" /></div>
+                                            </div>
+                                            <div className="relative border border-zinc-200 bg-white">
+                                                <select value={set.metodo} onChange={(e) => handleUpdateAdvancedSet(set.id, 'metodo', e.target.value)} className="w-full bg-transparent px-2 py-2 text-[10px] outline-none focus:ring-1 focus:ring-zinc-900 rounded-none font-bold uppercase tracking-widest text-zinc-600 appearance-none cursor-pointer text-center">
+                                                    <option value="">+ Adicionar Técnica</option>{metodosTreino.filter(m => m !== 'Padrão').map(m => (<option key={m} value={m}>{m}</option>))}
+                                                </select><div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-zinc-400"><ChevronRight className="w-4 h-4 rotate-90" /></div>
+                                            </div>
                                         </div>
                                     </div>
                                 ))}

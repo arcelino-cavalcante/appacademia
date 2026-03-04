@@ -43,9 +43,10 @@ export function ExercicioItem({ nome, series, reps, carga, descanso, metodo, vid
                             {advancedSets.map((set, idx) => (
                                 <div key={set.id} className={`border px-2 py-1.5 flex flex-col gap-1 ${set.metodo ? 'bg-zinc-900 border-zinc-900' : 'bg-zinc-50 border-zinc-200'}`}>
                                     <div className="flex items-center gap-3 w-full">
-                                        <div className="w-12 flex-shrink-0 flex flex-col">
+                                        <div className="w-16 flex-shrink-0 flex flex-col">
                                             <span className={`text-[10px] uppercase font-bold ${set.metodo ? 'text-white' : 'text-zinc-900'}`}>Sér {idx + 1}</span>
-                                            {set.metodo && <span className="text-[8px] text-zinc-300 uppercase tracking-widest leading-tight">{set.metodo}</span>}
+                                            {set.tipoSerie && set.tipoSerie !== 'Padrão' && <span className="text-[9px] font-bold tracking-tight mt-0.5 leading-none whitespace-nowrap overflow-visible" style={{ color: set.tipoSerie.includes('Warm-up') ? '#22c55e' : set.tipoSerie.includes('Feeder') ? '#eab308' : set.tipoSerie.includes('Top Set') ? '#ef4444' : '#3b82f6' }}>{set.tipoSerie}</span>}
+                                            {set.metodo && <span className="text-[8px] text-zinc-300 uppercase tracking-widest leading-tight mt-0.5">{set.metodo}</span>}
                                         </div>
                                         <div className="flex flex-1 justify-between gap-2">
                                             <span className={`text-[10px] uppercase tracking-wider font-bold ${set.metodo ? 'text-zinc-400' : 'text-zinc-500'}`}>Rep: <span className={set.metodo ? 'text-white' : 'text-zinc-900'}>{set.reps || '-'}</span></span>
