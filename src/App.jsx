@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { auth, db } from './lib/firebase';
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from 'firebase/auth';
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged } from 'firebase/auth';
 import { collection, doc, setDoc, deleteDoc, getDocs, getDoc, query, where } from 'firebase/firestore';
 import {
     Users,
@@ -192,7 +192,33 @@ export default function App() {
     const [editingRoutineId, setEditingRoutineId] = useState(null);
     const [editingExercicioId, setEditingExercicioId] = useState(null);
 
-    // --- Efeitos ---
+    // --- Efeitos de Persistência ---
+    useEffect(() => {
+        // 1. Persistência do Treinador (Firebase Auth)
+        const unsubscribe = onAuthStateChanged(auth, (user) => {
+            if (user) {
+                setFirebaseUser(user);
+                setAppMode('trainer');
+            }
+        });
+
+        // 2. Persistência do Aluno (LocalStorage)
+        const savedStudent = localStorage.getItem('app-personal-student');
+        if (savedStudent) {
+            try {
+                const studentData = JSON.parse(savedStudent);
+                setLoggedStudent(studentData);
+                setAppMode('student');
+            } catch (e) {
+                console.error("Erro ao restaurar sessão do aluno", e);
+                localStorage.removeItem('app-personal-student');
+            }
+        }
+
+        return () => unsubscribe();
+    }, []);
+
+    // --- Efeitos de Carga de Dados ---
     useEffect(() => {
         const loadAllData = async () => {
             if (appMode === 'login') return; // Otmização 1: Não carrega o mundo inteiro no Login
@@ -284,6 +310,7 @@ export default function App() {
             await signOut(auth);
             setFirebaseUser(null);
         } catch (e) { console.error("Erro logout", e); }
+        localStorage.removeItem('app-personal-student');
         setAppMode('login');
         setLoginStep('choice');
         setLoggedStudent(null);
@@ -388,7 +415,9 @@ export default function App() {
                                             }
 
                                             if (matchedDoc) {
-                                                setLoggedStudent({ id: matchedDoc.id, ...matchedDoc.data() });
+                                                const studentData = { id: matchedDoc.id, ...matchedDoc.data() };
+                                                setLoggedStudent(studentData);
+                                                localStorage.setItem('app-personal-student', JSON.stringify(studentData));
                                                 setAppMode('student');
                                             } else {
                                                 alert('E-mail ou senha incorretos.');
