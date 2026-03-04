@@ -435,8 +435,8 @@ export default function App() {
         };
 
         return (
-            <div className="min-h-screen bg-zinc-100 font-sans text-zinc-900 selection:bg-zinc-900 selection:text-white pb-28 pt-16 max-w-md mx-auto relative shadow-2xl">
-                <header className="fixed top-0 left-0 right-0 h-16 bg-zinc-900 z-40 flex items-center justify-between px-4 shadow-md">
+            <div className="min-h-screen bg-zinc-100 font-sans text-zinc-900 selection:bg-zinc-900 selection:text-white pb-[calc(7rem+env(safe-area-inset-bottom))] pt-[calc(4rem+env(safe-area-inset-top))] max-w-md mx-auto relative shadow-2xl">
+                <header className="fixed top-0 left-1/2 -translate-x-1/2 w-full max-w-md h-[calc(4rem+env(safe-area-inset-top))] pt-[env(safe-area-inset-top)] bg-zinc-900 z-40 flex items-center justify-between px-4 shadow-md">
                     <div className="w-10 flex items-center justify-start">
                         {['treinos', 'exercicios'].includes(studentView) && (
                             <button onClick={handleStudentBackNav} className="p-2 -ml-2 text-white hover:bg-zinc-800 transition-colors"><ArrowLeft className="w-6 h-6" /></button>
@@ -568,7 +568,7 @@ export default function App() {
                     )}
                 </main>
 
-                <nav className="fixed bottom-0 left-0 right-0 h-20 bg-white border-t border-zinc-200 z-40 flex justify-around items-center shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] pb-1">
+                <nav className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-md h-[calc(5rem+env(safe-area-inset-bottom))] pb-[calc(0.25rem+env(safe-area-inset-bottom))] bg-white border-t border-zinc-200 z-40 flex justify-around items-center shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]">
                     <button onClick={() => setStudentView('rotinas')} className={`flex flex-col items-center justify-center w-full h-full transition-colors relative ${['rotinas', 'treinos', 'exercicios'].includes(studentView) ? 'text-zinc-900' : 'text-zinc-400 hover:text-zinc-900'}`}>
                         {['rotinas', 'treinos', 'exercicios'].includes(studentView) && <div className="absolute top-0 left-0 right-0 h-[3px] bg-zinc-900" />}
                         <Dumbbell className="w-6 h-6 mb-1.5" /><span className="text-xs uppercase font-bold tracking-widest">Treinos</span>
@@ -969,8 +969,8 @@ export default function App() {
     };
 
     return (
-        <div className="min-h-screen bg-zinc-100 font-sans text-zinc-900 selection:bg-zinc-900 selection:text-white pb-28 pt-16 max-w-md mx-auto relative shadow-2xl">
-            <header className="fixed top-0 left-0 right-0 h-16 bg-zinc-900 z-40 flex items-center justify-between px-4 shadow-md">
+        <div className="min-h-screen bg-zinc-100 font-sans text-zinc-900 selection:bg-zinc-900 selection:text-white pb-[calc(7rem+env(safe-area-inset-bottom))] pt-[calc(4rem+env(safe-area-inset-top))] max-w-md mx-auto relative shadow-2xl">
+            <header className="fixed top-0 left-1/2 -translate-x-1/2 w-full max-w-md h-[calc(4rem+env(safe-area-inset-top))] pt-[env(safe-area-inset-top)] bg-zinc-900 z-40 flex items-center justify-between px-4 shadow-md">
                 <div className="w-10 flex items-center justify-start">
                     {(!['dashboard', 'alunos', 'biblioteca', 'ajustes'].includes(currentView)) && (
                         <button onClick={handleTrainerBack} className="p-2 -ml-2 text-white hover:bg-zinc-800 transition-colors">
@@ -1314,7 +1314,7 @@ export default function App() {
             </main>
 
             {/* NAV INFERIOR DO TREINADOR */}
-            <nav className="fixed bottom-0 left-0 right-0 h-20 bg-white border-t border-zinc-200 z-40 flex justify-between items-center shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] pb-1">
+            <nav className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-md h-[calc(5rem+env(safe-area-inset-bottom))] pb-[calc(0.25rem+env(safe-area-inset-bottom))] bg-white border-t border-zinc-200 z-40 flex justify-between items-center shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]">
                 <button onClick={() => setCurrentView('dashboard')} className={`flex flex-col items-center justify-center flex-1 h-full transition-colors relative ${currentView === 'dashboard' ? 'text-zinc-900' : 'text-zinc-400 hover:text-zinc-900'}`}>
                     {currentView === 'dashboard' && <div className="absolute top-0 left-0 right-0 h-[3px] bg-zinc-900" />}
                     <Activity className="w-6 h-6 mb-1.5" /><span className="text-[10px] uppercase font-bold tracking-widest">Painel</span>
