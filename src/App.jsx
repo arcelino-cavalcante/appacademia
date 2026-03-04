@@ -995,13 +995,25 @@ export default function App() {
                             <p className="text-xs text-zinc-500 font-bold uppercase tracking-widest mt-1">Resumo do seu negócio</p>
                         </div>
 
-                        <div className="bg-red-50 border border-red-100 p-4 shadow-sm flex items-start gap-3">
-                            <AlertCircle className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" />
-                            <div className="flex flex-col">
-                                <span className="text-[10px] uppercase font-bold tracking-widest text-red-500">Aviso de Inatividade</span>
-                                <p className="text-xs text-zinc-900 mt-1">O aluno <span className="font-bold">João Silva</span> não regista um treino há 5 dias.</p>
-                            </div>
-                        </div>
+                        {(() => {
+                            if (alunos.length === 0) return null;
+
+                            // Finds first student who hasn't submitted any feedback yet, 
+                            // or you can expand this to check days since last feedback.
+                            const alunoInativo = alunos.find(a => !feedbacks.some(f => f.alunoId === a.id));
+
+                            if (!alunoInativo) return null;
+
+                            return (
+                                <div className="bg-red-50 border border-red-100 p-4 shadow-sm flex items-start gap-3">
+                                    <AlertCircle className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" />
+                                    <div className="flex flex-col">
+                                        <span className="text-[10px] uppercase font-bold tracking-widest text-red-500">Aviso de Inatividade</span>
+                                        <p className="text-xs text-zinc-900 mt-1">O aluno <span className="font-bold">{alunoInativo.nome}</span> precisa de acompanhamento (sem treinos recentes).</p>
+                                    </div>
+                                </div>
+                            );
+                        })()}
 
                         <div className="grid grid-cols-2 gap-4">
                             <div className="bg-white border border-zinc-200 p-5 shadow-sm flex flex-col items-start gap-1 relative overflow-hidden">
