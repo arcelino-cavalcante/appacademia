@@ -161,7 +161,7 @@ export default function App() {
     const [advancedSets, setAdvancedSets] = useState([
         { id: 1, reps: '', carga: '', descanso: '', cadencia: '', metodo: '', tipoSerie: 'Padrão' }
     ]);
-    const metodosTreino = ['Padrão', 'Drop Set', 'Rest-Pause', 'Pico de Contração', 'Isometria', 'Bi-set', 'FST-7', 'Pirâmide', 'Até a Falha'];
+    const metodosTreino = ['Padrão', 'Drop Set', 'Rest-Pause', '🔥 Cluster Sets', 'Pico de Contração', 'Isometria', 'Bi-set', '🔥 FST-7', '🔥 SST (Sarcoplasma Stimulating)', '🔥 GVT (10x10)', 'Pirâmide', 'Até a Falha'];
     const tiposDeSerie = ['Padrão', '🟢 Warm-up', '🟡 Feeder', '🔴 Top Set', '🔵 Back-off'];
 
     // --- Estados de Edição CRUD ---
