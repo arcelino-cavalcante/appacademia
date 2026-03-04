@@ -30,7 +30,8 @@ import {
     AlertCircle,
     BrainCircuit,
     Wand2,
-    Loader2
+    Loader2,
+    Play
 } from 'lucide-react';
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 import OpenAI from "openai";
@@ -257,7 +258,6 @@ export default function App() {
         setAppMode('login');
         setLoginStep('choice');
         setLoggedStudent(null);
-        setSelectedLoginStudentId('');
         setCurrentView('dashboard');
         setStudentView('rotinas');
         setTrainerAlunoTab('rotinas');
