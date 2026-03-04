@@ -41,17 +41,29 @@ import WorkoutPlayer from './components/ui/WorkoutPlayer';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 const AvatarMasculino = ({ className }) => (
-    <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
-        <path d="M18 18c4.418 0 8-3.582 8-8s-3.582-8-8-8-8 3.582-8 8 3.582 8 8 8z" fill="currentColor" />
-        <path d="M18 21.6c-5.99 0-18 3.011-18 9.027V36h36v-5.373c0-6.016-12.01-9.027-18-9.027z" fill="currentColor" opacity="0.8" />
+    <svg viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
+        {/* Background / Depth */}
+        <circle cx="64" cy="64" r="64" fill="currentColor" opacity="0.05" />
+        {/* Hair - Short & Styled */}
+        <path d="M38 48c0-14.359 11.641-26 26-26s26 11.641 26 26v4H38v-4z" fill="currentColor" opacity="0.9" />
+        {/* Face */}
+        <path d="M42 50c0 12.15 9.85 22 22 22s22-9.85 22-22V44H42v6z" fill="currentColor" />
+        {/* Body / Shoulders */}
+        <path d="M110 128c0-23.196-18.804-42-42-42H60c-23.196 0-42 18.804-42 42v8h92v-8z" fill="currentColor" opacity="0.7" />
     </svg>
 );
 
 const AvatarFeminino = ({ className }) => (
-    <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
-        <path d="M18 18c4.418 0 8-3.582 8-8s-3.582-8-8-8-8 3.582-8 8 3.582 8 8 8z" fill="currentColor" />
-        <path d="M18 21.6c-5.99 0-18 3.011-18 9.027V36h36v-5.373c0-6.016-12.01-9.027-18-9.027z" fill="currentColor" opacity="0.8" />
-        <path d="M26 10c0 4.418-3.582 10-8 10s-8-5.582-8-10v5c0 4.418 3.582 8 8 8s8-3.582 8-8v-5z" fill="currentColor" opacity="0.9" />
+    <svg viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
+        {/* Background / Depth */}
+        <circle cx="64" cy="64" r="64" fill="currentColor" opacity="0.05" />
+        {/* Hair - Long & Fluid */}
+        <path d="M34 40c0-16.569 13.431-30 30-30s30 13.431 30 30v48H34V40z" fill="currentColor" opacity="0.8" />
+        <path d="M34 40c0-16.569 13.431-30 30-30s30 13.431 30 30v20c0 10.512-8.523 19.035-19.035 19.035h-21.93C42.523 79.035 34 70.512 34 60V40z" fill="currentColor" opacity="0.9" />
+        {/* Face */}
+        <path d="M46 52c0 9.941 8.059 18 18 18s18-8.059 18-18V44H46v8z" fill="currentColor" />
+        {/* Body / Shoulders */}
+        <path d="M104 128c0-19.882-16.118-36-36-36H60c-19.882 0-36 16.118-36 36v8h80v-8z" fill="currentColor" opacity="0.6" />
     </svg>
 );
 
