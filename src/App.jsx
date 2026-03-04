@@ -147,6 +147,7 @@ export default function App() {
     const [iaPrompt, setIaPrompt] = useState('');
     const [isGeneratingIA, setIsGeneratingIA] = useState(false);
     const [iaGeneratedTreino, setIaGeneratedTreino] = useState(null);
+    const [isGlossaryOpen, setIsGlossaryOpen] = useState(false);
 
     // --- Estado da API de Exercícios ---
     const [apiExercicios, setApiExercicios] = useState([]);
@@ -501,7 +502,11 @@ export default function App() {
                         )}
                     </div>
                     <h1 className="text-sm font-bold uppercase tracking-widest text-white truncate flex-1 text-center">{getStudentHeaderTitle()}</h1>
-                    <div className="w-10 flex items-center justify-end"><UserCircle className="w-6 h-6 text-zinc-400" /></div>
+                    <div className="w-10 flex items-center justify-end">
+                        <button onClick={() => setIsGlossaryOpen(true)} className="p-2 text-zinc-400 hover:text-white transition-colors">
+                            <BookOpen className="w-6 h-6" />
+                        </button>
+                    </div>
                 </header>
 
                 <main className="w-full flex flex-col min-h-[calc(100vh-8rem)]">
@@ -682,6 +687,54 @@ export default function App() {
                         </div>
                     </div>
                 )}
+                {/* MODAL: GLOSSÁRIO DE TÉCNICAS (WIKI ELITE) */}
+                {isGlossaryOpen && (
+                    <div className="fixed inset-0 bg-white z-[110] flex flex-col max-w-md mx-auto animate-in fade-in slide-in-from-bottom duration-300">
+                        <header className="h-[calc(3.5rem+env(safe-area-inset-top))] pt-[env(safe-area-inset-top)] bg-zinc-900 flex items-center px-4 shadow-md flex-shrink-0 relative">
+                            <button onClick={() => setIsGlossaryOpen(false)} className="absolute left-2 p-2 text-white hover:bg-zinc-800 transition-colors z-10"><X className="w-6 h-6" /></button>
+                            <h1 className="text-sm font-bold uppercase tracking-widest text-white truncate w-full text-center flex items-center justify-center gap-2"><BookOpen className="w-4 h-4" /> Manual de Treino Elite</h1>
+                        </header>
+
+                        <div className="flex-1 overflow-y-auto bg-zinc-50 p-5 pb-10">
+                            <div className="mb-8 text-center">
+                                <div className="bg-zinc-900 text-white w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3 shadow-lg">
+                                    <BrainCircuit className="w-6 h-6" />
+                                </div>
+                                <h2 className="text-lg font-black uppercase tracking-widest text-zinc-900">Elite Knowledge</h2>
+                                <p className="text-[10px] font-bold uppercase tracking-widest text-zinc-400 mt-1">Domine as técnicas dos campeões</p>
+                            </div>
+
+                            <div className="space-y-4">
+                                {[
+                                    { t: "⚡ Drop Set", d: "Executar até a falha muscular, reduzir o peso em 20-30% e continuar imediatamente sem descanso.", e: "Ex: Supino 10 reps -> Tira peso -> +8 reps." },
+                                    { t: "🔥 Rest-Pause", d: "Executar até a falha, descansar apenas 15 segundos e realizar mais algumas repetições com o mesmo peso.", e: "Mantenha o foco total na técnica mesmo com a fadiga." },
+                                    { t: "💎 Cluster Sets", d: "Divisão da série em mini-blocos (ex: 4+4+4) com 10-15s de pausa entre eles.", e: "Permite usar cargas muito mais altas para o mesmo volume final." },
+                                    { t: "🧬 FST-7", d: "Realizar 7 séries de 10-12 repetições com apenas 30 segundos de descanso cravados.", e: "Fundamental: Alongue o músculo trabalhado durante o intervalo." },
+                                    { t: "🌪️ SST / GVT", d: "Protocolos de choque que variam cadência e volume (10x10) para máximo estresse metabólico.", e: "Prepare o psicológico; é um dos protocolos mais agressivos." },
+                                    { t: "⏹️ Isometria", d: "Manter o peso estático (parado) no ponto de maior tensão muscular por alguns segundos.", e: "Ex: Segurar 2s no pico de contração da Rosca Direta." },
+                                    { t: "🔗 Bi-set / Tri-set", d: "Realizar 2 ou 3 exercícios diferentes para o mesmo músculo (ou opostos) sem descanso entre eles.", e: "Aumenta drasticamente a densidade do treino." },
+                                    { t: "⏱️ Cadência (TUT)", d: "O tempo de cada fase do movimento. Ex: 3010 (3s descendo, 0s embaixo, 1s subindo).", e: "Controlar a descida (excêntrica) é a chave para a hipertrofia." },
+                                    { t: "📊 RPE (1-10)", d: "Escala de Percepção de Esforço. 10 é esforço máximo (falha), 8 é esforço alto com 2 reps de reserva.", e: "Seja honesto com seu esforço para garantir a evolução." }
+                                ].map((item, idx) => (
+                                    <div key={idx} className="bg-white border border-zinc-200 p-5 shadow-sm group hover:border-zinc-900 transition-colors">
+                                        <h3 className="text-sm font-black uppercase tracking-widest text-zinc-900 mb-2">{item.t}</h3>
+                                        <p className="text-xs text-zinc-600 leading-relaxed active:text-zinc-900 mb-3">{item.d}</p>
+                                        <div className="bg-zinc-100 p-3 border-l-2 border-zinc-900">
+                                            <p className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest italic">{item.e}</p>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+
+                            <button
+                                onClick={() => setIsGlossaryOpen(false)}
+                                className="w-full bg-zinc-900 text-white py-4 mt-8 uppercase font-black text-xs tracking-widest shadow-xl active:scale-95 transition-all"
+                            >
+                                Entendi, vamos ao treino!
+                            </button>
+                        </div>
+                    </div>
+                )}
 
                 {isWorkoutPlayerOpen && (
                     <WorkoutPlayer
@@ -694,7 +747,7 @@ export default function App() {
                         }}
                     />
                 )}
-            </div>
+            </div >
         );
     }
 
