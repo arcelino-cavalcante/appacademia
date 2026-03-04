@@ -13,9 +13,15 @@ export function ExercicioItem({ nome, series, reps, carga, descanso, metodo, vid
                 )}
                 {video ? (
                     <div className="w-16 h-16 flex-shrink-0 bg-zinc-100 border border-zinc-900 overflow-hidden">
-                        <video autoPlay loop muted playsInline className="w-full h-full object-cover">
-                            <source src={video} type="video/mp4" />
-                        </video>
+                        <video
+                            autoPlay
+                            loop
+                            muted
+                            playsInline
+                            preload="metadata"
+                            className="w-full h-full object-cover"
+                            src={video.includes('raw.githubusercontent.com') ? video.replace('raw.githubusercontent.com', 'cdn.jsdelivr.net/gh').replace('/main/', '@main/') : video}
+                        />
                     </div>
                 ) : (
                     <div className="w-2 h-16 flex-shrink-0 bg-zinc-900" />

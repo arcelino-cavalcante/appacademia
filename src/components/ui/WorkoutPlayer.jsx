@@ -253,7 +253,15 @@ export default function WorkoutPlayer({ exercicios, onFinish, onClose }) {
             {/* Video / Visual */}
             <div className="w-full shrink-0 bg-black relative shadow-2xl" style={{ height: '35vh' }}>
                 {currentSet.video ? (
-                    <video src={currentSet.video} autoPlay loop muted playsInline className="w-full h-full object-cover opacity-80" />
+                    <video
+                        src={currentSet.video.includes('raw.githubusercontent.com') ? currentSet.video.replace('raw.githubusercontent.com', 'cdn.jsdelivr.net/gh').replace('/main/', '@main/') : currentSet.video}
+                        autoPlay
+                        loop
+                        muted
+                        playsInline
+                        preload="auto"
+                        className="w-full h-full object-cover opacity-80"
+                    />
                 ) : (
                     <div className="w-full h-full flex items-center justify-center bg-zinc-800"><Dumbbell className="w-16 h-16 text-zinc-700" /></div>
                 )}

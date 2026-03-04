@@ -66,6 +66,17 @@ const AppLogo = ({ className }) => (
     </svg>
 );
 
+// ⚡ Otimizador de Performance de Vídeo (CDN jsDelivr)
+const optimizeVideoUrl = (url) => {
+    if (!url) return url;
+    if (url.includes('raw.githubusercontent.com')) {
+        return url
+            .replace('raw.githubusercontent.com', 'cdn.jsdelivr.net/gh')
+            .replace('/main/', '@main/');
+    }
+    return url;
+};
+
 export default function App() {
     // --- Estados de Controle do Aplicativo (Login/Modos) ---
     const [appMode, setAppMode] = useState('login'); // 'login', 'trainer', 'student'
@@ -242,9 +253,14 @@ export default function App() {
         fetch(API_URL)
             .then(res => res.json())
             .then(data => {
-                setApiExercicios(data);
+                // Injetar CDN em tempo real para carregamento instantâneo
+                const optimizedData = data.map(ex => ({
+                    ...ex,
+                    video: optimizeVideoUrl(ex.video || ex.mp4 || ex.url)
+                }));
+                setApiExercicios(optimizedData);
                 const getCategory = (ex) => ex.musculo || ex.bodyPart || ex.target || ex.muscle || ex.grupo_muscular || ex.categoria || 'Geral';
-                const categoriasUnicas = [...new Set(data.map(getCategory))].filter(Boolean).sort();
+                const categoriasUnicas = [...new Set(optimizedData.map(getCategory))].filter(Boolean).sort();
                 setCategoriasApi(['Todas', ...categoriasUnicas]);
             })
             .catch(err => console.error("Erro ao carregar exercícios:", err));
@@ -1695,7 +1711,17 @@ Nota para metodo: pode ser 'Padrão', 'Drop Set', 'Rest-Pause', 'FST-7', 'Bi-set
                     </header>
                     <div className="flex-1 overflow-y-auto pb-24">
                         <div className="bg-zinc-100 border-b border-zinc-200">
-                            {(selectedApiExercise.video || selectedApiExercise.mp4 || selectedApiExercise.url) ? <video src={selectedApiExercise.video || selectedApiExercise.mp4 || selectedApiExercise.url} className="w-full aspect-video object-cover bg-black" autoPlay loop muted playsInline /> : <div className="w-full aspect-video flex items-center justify-center bg-zinc-200"><Dumbbell className="w-12 h-12 text-zinc-400" /></div>}
+                            {(selectedApiExercise.video || selectedApiExercise.mp4 || selectedApiExercise.url) ? (
+                                <video
+                                    src={optimizeVideoUrl(selectedApiExercise.video || selectedApiExercise.mp4 || selectedApiExercise.url)}
+                                    className="w-full aspect-video object-cover bg-black"
+                                    autoPlay
+                                    loop
+                                    muted
+                                    playsInline
+                                    preload="metadata"
+                                />
+                            ) : <div className="w-full aspect-video flex items-center justify-center bg-zinc-200"><Dumbbell className="w-12 h-12 text-zinc-400" /></div>}
                             <div className="p-5">
                                 <h2 className="text-lg font-bold text-zinc-900 uppercase tracking-wide leading-tight">{selectedApiExercise.name || selectedApiExercise.nome}</h2>
                                 <p className="text-xs text-zinc-500 font-bold uppercase tracking-widest mt-1">{getCategory(selectedApiExercise)}</p>
