@@ -1073,7 +1073,6 @@ export default function App() {
                             <input type="text" placeholder="Buscar aluno..." value={studentSearchTerm} onChange={(e) => setStudentSearchTerm(e.target.value)} className="w-full bg-zinc-100 border-none px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-zinc-900 rounded-none placeholder-zinc-400 font-medium pl-10" />
                             <Search className="w-4 h-4 text-zinc-400 absolute left-4 top-1/2 transform -translate-y-1/2" />
                         </div>
-                        <button onClick={() => setIsAddStudentModalOpen(true)} className="bg-zinc-900 text-white px-5 py-3 hover:bg-zinc-800 transition-colors rounded-none flex items-center justify-center shadow-md flex-shrink-0"><Plus className="w-5 h-5" /></button>
                     </div>
                 )}
 
@@ -1290,24 +1289,7 @@ export default function App() {
                     {currentView === 'rotinas' && trainerAlunoTab === 'rotinas' && rotinas.filter(r => r.alunoId === selectedAluno?.id).length === 0 && <div className="p-10 text-center text-xs text-zinc-400 font-bold uppercase tracking-widest">Nenhuma rotina cadastrada.</div>}
                     {currentView === 'treinos' && treinos.filter(t => t.rotinaId === selectedRotina?.id).length === 0 && <div className="p-10 text-center text-xs text-zinc-400 font-bold uppercase tracking-widest">Nenhum treino cadastrado.</div>}
 
-                    {['rotinas', 'treinos', 'exercicios', 'biblioteca_exercicios'].includes(currentView) && (
-                        <div className="p-4 mt-auto">
-                            {/* Só mostra o botão de + Rotina se estiver na tab de Rotinas */}
-                            {!(currentView === 'rotinas' && trainerAlunoTab === 'feedbacks') && (
-                                <button
-                                    onClick={() => {
-                                        if (currentView === 'rotinas') setIsAddRoutineModalOpen(true);
-                                        else if (currentView === 'treinos') setIsWorkoutSelectionOpen(true);
-                                        else setIsExerciseSelectionOpen(true);
-                                    }}
-                                    className="w-full bg-zinc-900 text-white py-4 flex items-center justify-center gap-2 hover:bg-zinc-800 transition-colors uppercase font-bold text-xs tracking-widest shadow-md"
-                                >
-                                    <Plus className="w-5 h-5" />
-                                    {currentView === 'rotinas' ? 'Adicionar Rotina' : currentView === 'treinos' ? 'Adicionar Treino' : 'Adicionar Exercício'}
-                                </button>
-                            )}
-                        </div>
-                    )}
+
 
                     {currentView === 'ia_trainer' && (
                         <div className="flex-1 flex flex-col items-center justify-center p-6 text-center">
@@ -1353,6 +1335,35 @@ export default function App() {
                     <Settings className="w-6 h-6 mb-1.5" /><span className="text-[10px] uppercase font-bold tracking-widest">Ajustes</span>
                 </button>
             </nav>
+
+            {/* 🛸 Botão Flutuante de Ação (FAB) - Visibilidade Persistente */}
+            {['alunos', 'rotinas', 'treinos', 'exercicios', 'biblioteca_exercicios', 'biblioteca'].includes(currentView) && !(currentView === 'rotinas' && trainerAlunoTab === 'feedbacks') && (
+                <div className="fixed bottom-[calc(5.5rem+env(safe-area-inset-bottom))] left-1/2 -translate-x-1/2 w-full max-w-md flex justify-end pr-6 z-50 pointer-events-none animate-in fade-in slide-in-from-bottom-4 duration-300">
+                    <button
+                        onClick={() => {
+                            if (currentView === 'alunos') setIsAddStudentModalOpen(true);
+                            else if (currentView === 'rotinas') setIsAddRoutineModalOpen(true);
+                            else if (currentView === 'treinos') setIsWorkoutSelectionOpen(true);
+                            else if (currentView === 'biblioteca') {
+                                // Se for na raiz da biblioteca, talvez criar novo treino para biblioteca?
+                                // Por enquanto vamos abrir o de seleção de treino se for o caso
+                                const name = window.prompt("Nome do novo treino da biblioteca:");
+                                if (name && name.trim()) {
+                                    const newId = Date.now();
+                                    const newDoc = { id: newId, nome: name.trim() };
+                                    setBibliotecaTreinos([...bibliotecaTreinos, newDoc]);
+                                    setDoc(doc(db, 'bibliotecaTreinos', newId.toString()), newDoc);
+                                }
+                            }
+                            else setIsExerciseSelectionOpen(true); // Para exercicios e biblioteca_exercicios
+                        }}
+                        className="pointer-events-auto bg-zinc-900 text-white w-14 h-14 rounded-full shadow-[0_10px_25px_-5px_rgba(0,0,0,0.4)] flex items-center justify-center hover:bg-zinc-800 active:scale-90 transition-all border border-zinc-700/50"
+                        title="Adicionar Novo"
+                    >
+                        <Plus className="w-6 h-6" />
+                    </button>
+                </div>
+            )}
 
             {/* MODAIS (Aluno, Rotina, Treino, Exercício) OMITIDOS POR BREVIDADE MAS INTACTOS */}
 
