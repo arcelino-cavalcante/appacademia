@@ -435,7 +435,7 @@ export default function App() {
         };
 
         return (
-            <div className="min-h-screen bg-zinc-100 font-sans text-zinc-900 selection:bg-zinc-900 selection:text-white pb-20 pt-16 max-w-md mx-auto relative shadow-2xl">
+            <div className="min-h-screen bg-zinc-100 font-sans text-zinc-900 selection:bg-zinc-900 selection:text-white pb-28 pt-16 max-w-md mx-auto relative shadow-2xl">
                 <header className="fixed top-0 left-0 right-0 h-16 bg-zinc-900 z-40 flex items-center justify-between px-4 shadow-md">
                     <div className="w-10 flex items-center justify-start">
                         {['treinos', 'exercicios'].includes(studentView) && (
@@ -568,18 +568,18 @@ export default function App() {
                     )}
                 </main>
 
-                <nav className="fixed bottom-0 left-0 right-0 h-16 bg-white border-t border-zinc-200 z-40 flex justify-around items-center shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]">
+                <nav className="fixed bottom-0 left-0 right-0 h-20 bg-white border-t border-zinc-200 z-40 flex justify-around items-center shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] pb-1">
                     <button onClick={() => setStudentView('rotinas')} className={`flex flex-col items-center justify-center w-full h-full transition-colors relative ${['rotinas', 'treinos', 'exercicios'].includes(studentView) ? 'text-zinc-900' : 'text-zinc-400 hover:text-zinc-900'}`}>
                         {['rotinas', 'treinos', 'exercicios'].includes(studentView) && <div className="absolute top-0 left-0 right-0 h-[3px] bg-zinc-900" />}
-                        <Dumbbell className="w-5 h-5 mb-1" /><span className="text-[10px] uppercase font-bold tracking-widest">Treinos</span>
+                        <Dumbbell className="w-6 h-6 mb-1.5" /><span className="text-xs uppercase font-bold tracking-widest">Treinos</span>
                     </button>
                     <button onClick={() => setStudentView('evolucao')} className={`flex flex-col items-center justify-center w-full h-full transition-colors relative ${studentView === 'evolucao' ? 'text-zinc-900' : 'text-zinc-400 hover:text-zinc-900'}`}>
                         {studentView === 'evolucao' && <div className="absolute top-0 left-0 right-0 h-[3px] bg-zinc-900" />}
-                        <TrendingUp className="w-5 h-5 mb-1" /><span className="text-[10px] uppercase font-bold tracking-widest">Evolução</span>
+                        <TrendingUp className="w-6 h-6 mb-1.5" /><span className="text-xs uppercase font-bold tracking-widest">Evolução</span>
                     </button>
                     <button onClick={() => setStudentView('ajustes')} className={`flex flex-col items-center justify-center w-full h-full transition-colors relative ${studentView === 'ajustes' ? 'text-zinc-900' : 'text-zinc-400 hover:text-zinc-900'}`}>
                         {studentView === 'ajustes' && <div className="absolute top-0 left-0 right-0 h-[3px] bg-zinc-900" />}
-                        <UserCircle className="w-5 h-5 mb-1" /><span className="text-[10px] uppercase font-bold tracking-widest">Perfil</span>
+                        <UserCircle className="w-6 h-6 mb-1.5" /><span className="text-xs uppercase font-bold tracking-widest">Perfil</span>
                     </button>
                 </nav>
 
@@ -969,7 +969,7 @@ export default function App() {
     };
 
     return (
-        <div className="min-h-screen bg-zinc-100 font-sans text-zinc-900 selection:bg-zinc-900 selection:text-white pb-20 pt-16 max-w-md mx-auto relative shadow-2xl">
+        <div className="min-h-screen bg-zinc-100 font-sans text-zinc-900 selection:bg-zinc-900 selection:text-white pb-28 pt-16 max-w-md mx-auto relative shadow-2xl">
             <header className="fixed top-0 left-0 right-0 h-16 bg-zinc-900 z-40 flex items-center justify-between px-4 shadow-md">
                 <div className="w-10 flex items-center justify-start">
                     {(!['dashboard', 'alunos', 'biblioteca', 'ajustes'].includes(currentView)) && (
@@ -1314,26 +1314,26 @@ export default function App() {
             </main>
 
             {/* NAV INFERIOR DO TREINADOR */}
-            <nav className="fixed bottom-0 left-0 right-0 h-16 bg-white border-t border-zinc-200 z-40 flex justify-between items-center shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]">
+            <nav className="fixed bottom-0 left-0 right-0 h-20 bg-white border-t border-zinc-200 z-40 flex justify-between items-center shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] pb-1">
                 <button onClick={() => setCurrentView('dashboard')} className={`flex flex-col items-center justify-center flex-1 h-full transition-colors relative ${currentView === 'dashboard' ? 'text-zinc-900' : 'text-zinc-400 hover:text-zinc-900'}`}>
                     {currentView === 'dashboard' && <div className="absolute top-0 left-0 right-0 h-[3px] bg-zinc-900" />}
-                    <Activity className="w-5 h-5 mb-1" /><span className="text-[10px] uppercase font-bold tracking-widest">Painel</span>
+                    <Activity className="w-6 h-6 mb-1.5" /><span className="text-[10px] uppercase font-bold tracking-widest">Painel</span>
                 </button>
                 <button onClick={() => setCurrentView('alunos')} className={`flex flex-col items-center justify-center flex-1 h-full transition-colors relative ${['alunos', 'rotinas', 'treinos', 'exercicios'].includes(currentView) ? 'text-zinc-900' : 'text-zinc-400 hover:text-zinc-900'}`}>
                     {['alunos', 'rotinas', 'treinos', 'exercicios'].includes(currentView) && <div className="absolute top-0 left-0 right-0 h-[3px] bg-zinc-900" />}
-                    <Users className="w-5 h-5 mb-1" /><span className="text-[10px] uppercase font-bold tracking-widest">Alunos</span>
+                    <Users className="w-6 h-6 mb-1.5" /><span className="text-[10px] uppercase font-bold tracking-widest">Alunos</span>
                 </button>
                 <button onClick={() => setCurrentView('biblioteca')} className={`flex flex-col items-center justify-center flex-1 h-full transition-colors relative ${['biblioteca', 'biblioteca_exercicios'].includes(currentView) ? 'text-zinc-900' : 'text-zinc-400 hover:text-zinc-900'}`}>
                     {['biblioteca', 'biblioteca_exercicios'].includes(currentView) && <div className="absolute top-0 left-0 right-0 h-[3px] bg-zinc-900" />}
-                    <BookOpen className="w-5 h-5 mb-1" /><span className="text-[10px] uppercase font-bold tracking-widest">Biblio</span>
+                    <BookOpen className="w-6 h-6 mb-1.5" /><span className="text-[10px] uppercase font-bold tracking-widest">Biblio</span>
                 </button>
                 <button onClick={() => setCurrentView('ia_trainer')} className={`flex flex-col items-center justify-center flex-1 h-full transition-colors relative ${currentView === 'ia_trainer' ? 'text-orange-500' : 'text-zinc-400 hover:text-orange-500'}`}>
                     {currentView === 'ia_trainer' && <div className="absolute top-0 left-0 right-0 h-[3px] bg-orange-500" />}
-                    <BrainCircuit className="w-5 h-5 mb-1" /><span className="text-[10px] uppercase font-bold tracking-widest">A.I.</span>
+                    <BrainCircuit className="w-6 h-6 mb-1.5" /><span className="text-[10px] uppercase font-bold tracking-widest">A.I.</span>
                 </button>
                 <button onClick={() => setCurrentView('ajustes')} className={`flex flex-col items-center justify-center flex-1 h-full transition-colors relative ${currentView === 'ajustes' ? 'text-zinc-900' : 'text-zinc-400 hover:text-zinc-900'}`}>
                     {currentView === 'ajustes' && <div className="absolute top-0 left-0 right-0 h-[3px] bg-zinc-900" />}
-                    <Settings className="w-5 h-5 mb-1" /><span className="text-[10px] uppercase font-bold tracking-widest">Ajustes</span>
+                    <Settings className="w-6 h-6 mb-1.5" /><span className="text-[10px] uppercase font-bold tracking-widest">Ajustes</span>
                 </button>
             </nav>
 
