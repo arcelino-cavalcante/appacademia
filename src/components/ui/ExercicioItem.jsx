@@ -61,6 +61,14 @@ export function ExercicioItem({ nome, series, reps, carga, descanso, metodo, vid
                                             {set.detalheMetodo && <span className={`text-[9px] uppercase tracking-widest ${set.metodo ? 'text-orange-400' : 'text-orange-600'}`}>↳ {set.detalheMetodo}</span>}
                                         </div>
                                     )}
+                                    {set.notaBiomecanica && (
+                                        <div className="flex flex-col gap-0.5 mt-1 border-t border-orange-500/20 pt-1.5 pb-0.5 px-0.5">
+                                            <span className="text-[10px] font-bold uppercase tracking-widest text-orange-600 flex items-start gap-1 leading-tight w-full">
+                                                <span className="shrink-0">💡</span>
+                                                <span className="break-words max-w-[90%] whitespace-normal">{set.notaBiomecanica}</span>
+                                            </span>
+                                        </div>
+                                    )}
                                 </div>
                             ))}
                         </div>

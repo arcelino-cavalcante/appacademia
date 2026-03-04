@@ -77,6 +77,8 @@ export default function WorkoutPlayer({ exercicios, onFinish, onClose }) {
         let pDetalhe = ex.detalheMetodo;
         let pTipoSerie = 'Padrão';
 
+        let pNota = '';
+
         if (ex.isAdvanced && ex.advancedSets && ex.advancedSets[setIndex]) {
             const sData = ex.advancedSets[setIndex];
             prevCarga = sData.carga || prevCarga;
@@ -86,6 +88,7 @@ export default function WorkoutPlayer({ exercicios, onFinish, onClose }) {
             pMetodo = sData.metodo || pMetodo;
             pDetalhe = sData.detalheMetodo || pDetalhe;
             pTipoSerie = sData.tipoSerie || pTipoSerie;
+            pNota = sData.notaBiomecanica || pNota;
         }
 
         // Parse rest time to seconds
@@ -109,6 +112,7 @@ export default function WorkoutPlayer({ exercicios, onFinish, onClose }) {
             metodo: pMetodo,
             detalheMetodo: pDetalhe,
             tipoSerie: pTipoSerie,
+            notaBiomecanica: pNota,
             isLastInGroup: isLastInGroup,
             isCircuito: isCircuito
         };
@@ -211,7 +215,7 @@ export default function WorkoutPlayer({ exercicios, onFinish, onClose }) {
                 </div>
 
                 <p className="mt-12 text-zinc-400 text-xs font-bold uppercase tracking-widest text-center px-8">Prepare-se para a próxima série</p>
-                <div className="mt-4 p-4 bg-zinc-800 border border-zinc-700 w-4/5 mx-auto rounded-xl flex flex-col items-center gap-2">
+                <div className="mt-4 p-4 bg-zinc-800 border border-zinc-700 w-4/5 mx-auto rounded-xl flex flex-col items-center gap-2 relative">
                     {currentIndex + 1 < flatSets.length && flatSets[currentIndex + 1].tipoSerie && flatSets[currentIndex + 1].tipoSerie !== 'Padrão' && (
                         <span className="bg-zinc-900 border border-zinc-700 text-[8px] font-black tracking-widest uppercase px-2 py-1 rounded-sm shadow-sm" style={{ color: flatSets[currentIndex + 1].tipoSerie.includes('Warm-up') ? '#22c55e' : flatSets[currentIndex + 1].tipoSerie.includes('Feeder') ? '#eab308' : flatSets[currentIndex + 1].tipoSerie.includes('Top Set') ? '#ef4444' : '#3b82f6' }}>
                             {flatSets[currentIndex + 1].tipoSerie}
@@ -219,6 +223,13 @@ export default function WorkoutPlayer({ exercicios, onFinish, onClose }) {
                     )}
                     <p className="font-bold text-center">{currentIndex + 1 < flatSets.length ? flatSets[currentIndex + 1].nome : 'Fim do Treino!'}</p>
                 </div>
+
+                {currentIndex + 1 < flatSets.length && flatSets[currentIndex + 1].notaBiomecanica && (
+                    <div className="mt-4 w-4/5 px-4 py-3 bg-red-950/40 border border-red-500/50 rounded-xl flex flex-col items-center justify-center text-center animate-pulse duration-1000 shadow-[0_0_20px_rgba(239,68,68,0.1)]">
+                        <span className="text-[10px] font-black uppercase tracking-widest text-red-500 mb-1 flex items-center gap-1"><Zap className="w-3 h-3" /> Gatilho do Treinador</span>
+                        <p className="text-white text-xs font-bold font-mono tracking-tight leading-snug">"{flatSets[currentIndex + 1].notaBiomecanica}"</p>
+                    </div>
+                )}
 
                 <div className="mt-16 flex gap-4 w-full px-8">
                     <button onClick={() => setTimeRemaining(timeRemaining + 15)} className="flex-1 border border-zinc-700 py-3 text-xs font-bold uppercase tracking-widest text-zinc-300 hover:bg-zinc-800 transition">+15s</button>

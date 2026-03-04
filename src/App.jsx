@@ -159,7 +159,7 @@ export default function App() {
     const [novoMetodo, setNovoMetodo] = useState('Padrão');
     const [isAdvancedMode, setIsAdvancedMode] = useState(false);
     const [advancedSets, setAdvancedSets] = useState([
-        { id: 1, reps: '', carga: '', descanso: '', cadencia: '', metodo: '', tipoSerie: 'Padrão' }
+        { id: 1, reps: '', carga: '', descanso: '', cadencia: '', metodo: '', tipoSerie: 'Padrão', notaBiomecanica: '' }
     ]);
     const metodosTreino = ['Padrão', 'Drop Set', 'Rest-Pause', '🔥 Cluster Sets', 'Pico de Contração', 'Isometria', 'Bi-set', '🔥 FST-7', '🔥 SST (Sarcoplasma Stimulating)', '🔥 GVT (10x10)', 'Pirâmide', 'Até a Falha'];
     const tiposDeSerie = ['Padrão', '🟢 Warm-up', '🟡 Feeder', '🔴 Top Set', '🔵 Back-off'];
@@ -836,7 +836,7 @@ export default function App() {
         setEditingExercicioId(ex.id);
         setSelectedApiExercise({ name: ex.nome, video: ex.video });
         setIsAdvancedMode(ex.isAdvanced);
-        setAdvancedSets(ex.advancedSets && ex.advancedSets.length > 0 ? ex.advancedSets : [{ id: 1, reps: '', carga: '', descanso: '', cadencia: '', metodo: '', tipoSerie: 'Padrão' }]);
+        setAdvancedSets(ex.advancedSets && ex.advancedSets.length > 0 ? ex.advancedSets : [{ id: 1, reps: '', carga: '', descanso: '', cadencia: '', metodo: '', tipoSerie: 'Padrão', notaBiomecanica: '' }]);
         setNovasSeries(ex.series !== 'Varia' ? ex.series : '');
         setNovasReps(ex.reps !== 'Varia' ? ex.reps : '');
         setNovaCarga(ex.carga !== 'Varia' ? ex.carga : '');
@@ -918,12 +918,12 @@ export default function App() {
         }
 
         setNovasSeries(''); setNovasReps(''); setNovaCarga(''); setNovoDescanso(''); setNovoMetodo('Padrão');
-        setIsAdvancedMode(false); setAdvancedSets([{ id: 1, reps: '', carga: '', descanso: '', cadencia: '', metodo: '' }]);
+        setIsAdvancedMode(false); setAdvancedSets([{ id: 1, reps: '', carga: '', descanso: '', cadencia: '', metodo: '', notaBiomecanica: '' }]);
         setSelectedApiExercise(null); setIsExerciseConfigOpen(false);
         setEditingExercicioId(null);
     };
 
-    const handleAddAdvancedSet = () => setAdvancedSets([...advancedSets, { id: Date.now(), reps: '', carga: '', descanso: '', cadencia: '', metodo: '', tipoSerie: 'Padrão' }]);
+    const handleAddAdvancedSet = () => setAdvancedSets([...advancedSets, { id: Date.now(), reps: '', carga: '', descanso: '', cadencia: '', metodo: '', tipoSerie: 'Padrão', notaBiomecanica: '' }]);
     const handleRemoveAdvancedSet = (id) => { if (advancedSets.length > 1) setAdvancedSets(advancedSets.filter(s => s.id !== id)); };
     const handleUpdateAdvancedSet = (id, field, value) => setAdvancedSets(advancedSets.map(s => s.id === id ? { ...s, [field]: value } : s));
 
@@ -1690,7 +1690,7 @@ Nota para metodo: pode ser 'Padrão', 'Drop Set', 'Rest-Pause', 'FST-7', 'Bi-set
             {isExerciseConfigOpen && selectedApiExercise && (
                 <div className="fixed inset-0 bg-white z-[110] flex flex-col max-w-md mx-auto">
                     <header className="h-16 bg-zinc-900 flex items-center px-4 shadow-md flex-shrink-0 relative">
-                        <button onClick={() => { setIsExerciseConfigOpen(false); setIsExerciseSelectionOpen(true); setIsAdvancedMode(false); setAdvancedSets([{ id: 1, reps: '', carga: '', descanso: '', cadencia: '', metodo: '' }]); }} className="absolute left-2 p-2 text-white hover:bg-zinc-800 transition-colors z-10"><ArrowLeft className="w-6 h-6" /></button>
+                        <button onClick={() => { setIsExerciseConfigOpen(false); setIsExerciseSelectionOpen(true); setIsAdvancedMode(false); setAdvancedSets([{ id: 1, reps: '', carga: '', descanso: '', cadencia: '', metodo: '', notaBiomecanica: '' }]); }} className="absolute left-2 p-2 text-white hover:bg-zinc-800 transition-colors z-10"><ArrowLeft className="w-6 h-6" /></button>
                         <h1 className="text-sm font-bold uppercase tracking-widest text-white truncate w-full text-center">Configurar Exercício</h1>
                     </header>
                     <div className="flex-1 overflow-y-auto pb-24">
@@ -1740,6 +1740,9 @@ Nota para metodo: pode ser 'Padrão', 'Drop Set', 'Rest-Pause', 'FST-7', 'Bi-set
                                                     <option value="">+ Adicionar Técnica</option>{metodosTreino.filter(m => m !== 'Padrão').map(m => (<option key={m} value={m}>{m}</option>))}
                                                 </select><div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-zinc-400"><ChevronRight className="w-4 h-4 rotate-90" /></div>
                                             </div>
+                                        </div>
+                                        <div className="mt-2 w-full">
+                                            <input type="text" placeholder="💡 Dica / Gatilho Biomecânico (Opcional)" value={set.notaBiomecanica || ''} onChange={(e) => handleUpdateAdvancedSet(set.id, 'notaBiomecanica', e.target.value)} className="w-full bg-orange-50/50 border-l-2 border-l-orange-500 border border-zinc-200 px-3 py-2 text-[10px] outline-none focus:bg-orange-50 focus:border-orange-500 transition-colors rounded-none placeholder-orange-300 font-bold uppercase tracking-widest text-zinc-700" />
                                         </div>
                                     </div>
                                 ))}
