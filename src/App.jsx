@@ -452,8 +452,8 @@ export default function App() {
         };
 
         return (
-            <div className="min-h-screen bg-zinc-100 font-sans text-zinc-900 selection:bg-zinc-900 selection:text-white pb-[calc(7rem+env(safe-area-inset-bottom))] pt-[calc(4rem+env(safe-area-inset-top))] max-w-md mx-auto relative shadow-2xl">
-                <header className="fixed top-0 left-1/2 -translate-x-1/2 w-full max-w-md h-[calc(4rem+env(safe-area-inset-top))] pt-[env(safe-area-inset-top)] bg-zinc-900 z-40 flex items-center justify-between px-4 shadow-md">
+            <div className="min-h-screen bg-zinc-100 font-sans text-zinc-900 selection:bg-zinc-900 selection:text-white pb-[calc(6rem+env(safe-area-inset-bottom))] pt-[calc(3.5rem+env(safe-area-inset-top))] max-w-md mx-auto relative shadow-2xl">
+                <header className="fixed top-0 left-1/2 -translate-x-1/2 w-full max-w-md h-[calc(3.5rem+env(safe-area-inset-top))] pt-[env(safe-area-inset-top)] bg-zinc-900 z-40 flex items-center justify-between px-4 shadow-md">
                     <div className="w-10 flex items-center justify-start">
                         {['treinos', 'exercicios'].includes(studentView) && (
                             <button onClick={handleStudentBackNav} className="p-2 -ml-2 text-white hover:bg-zinc-800 transition-colors"><ArrowLeft className="w-6 h-6" /></button>
@@ -585,7 +585,7 @@ export default function App() {
                     )}
                 </main>
 
-                <nav className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-md h-[calc(5rem+env(safe-area-inset-bottom))] pb-[calc(0.25rem+env(safe-area-inset-bottom))] bg-white border-t border-zinc-200 z-40 flex justify-around items-center shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]">
+                <nav className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-md h-[calc(4.5rem+env(safe-area-inset-bottom))] pb-[calc(0.25rem+env(safe-area-inset-bottom))] bg-white border-t border-zinc-200 z-40 flex justify-around items-center shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]">
                     <button onClick={() => setStudentView('rotinas')} className={`flex flex-col items-center justify-center w-full h-full transition-colors relative ${['rotinas', 'treinos', 'exercicios'].includes(studentView) ? 'text-zinc-900' : 'text-zinc-400 hover:text-zinc-900'}`}>
                         {['rotinas', 'treinos', 'exercicios'].includes(studentView) && <div className="absolute top-0 left-0 right-0 h-[3px] bg-zinc-900" />}
                         <Dumbbell className="w-6 h-6 mb-1.5" /><span className="text-xs uppercase font-bold tracking-widest">Treinos</span>
@@ -986,8 +986,8 @@ export default function App() {
     };
 
     return (
-        <div className="min-h-screen bg-zinc-100 font-sans text-zinc-900 selection:bg-zinc-900 selection:text-white pb-[calc(7rem+env(safe-area-inset-bottom))] pt-[calc(4rem+env(safe-area-inset-top))] max-w-md mx-auto relative shadow-2xl">
-            <header className="fixed top-0 left-1/2 -translate-x-1/2 w-full max-w-md h-[calc(4rem+env(safe-area-inset-top))] pt-[env(safe-area-inset-top)] bg-zinc-900 z-40 flex items-center justify-between px-4 shadow-md">
+        <div className="min-h-screen bg-zinc-100 font-sans text-zinc-900 selection:bg-zinc-900 selection:text-white pb-[calc(6rem+env(safe-area-inset-bottom))] pt-[calc(3.5rem+env(safe-area-inset-top))] max-w-md mx-auto relative shadow-2xl">
+            <header className="fixed top-0 left-1/2 -translate-x-1/2 w-full max-w-md h-[calc(3.5rem+env(safe-area-inset-top))] pt-[env(safe-area-inset-top)] bg-zinc-900 z-40 flex items-center justify-between px-4 shadow-md">
                 <div className="w-10 flex items-center justify-start">
                     {(!['dashboard', 'alunos', 'biblioteca', 'ajustes'].includes(currentView)) && (
                         <button onClick={handleTrainerBack} className="p-2 -ml-2 text-white hover:bg-zinc-800 transition-colors">
@@ -1497,7 +1497,7 @@ Nota para metodo: pode ser 'Padrão', 'Drop Set', 'Rest-Pause', 'FST-7', 'Bi-set
 
             {isAddStudentModalOpen && (
                 <div className="fixed inset-0 bg-white z-[110] flex flex-col max-w-md mx-auto">
-                    <header className="h-16 bg-zinc-900 flex items-center px-4 shadow-md flex-shrink-0 relative">
+                    <header className="h-14 bg-zinc-900 flex items-center px-4 shadow-md flex-shrink-0 relative">
                         <button onClick={() => setIsAddStudentModalOpen(false)} className="absolute left-2 p-2 text-white hover:bg-zinc-800 transition-colors z-10"><ArrowLeft className="w-6 h-6" /></button>
                         <h1 className="text-sm font-bold uppercase tracking-widest text-white truncate w-full text-center">Cadastrar Aluno</h1>
                     </header>
@@ -1593,7 +1593,7 @@ Nota para metodo: pode ser 'Padrão', 'Drop Set', 'Rest-Pause', 'FST-7', 'Bi-set
 
             {isAddRoutineModalOpen && (
                 <div className="fixed inset-0 bg-white z-[110] flex flex-col max-w-md mx-auto">
-                    <header className="h-16 bg-zinc-900 flex items-center px-4 shadow-md flex-shrink-0 relative">
+                    <header className="h-14 bg-zinc-900 flex items-center px-4 shadow-md flex-shrink-0 relative">
                         <button onClick={() => setIsAddRoutineModalOpen(false)} className="absolute left-2 p-2 text-white hover:bg-zinc-800 transition-colors z-10"><ArrowLeft className="w-6 h-6" /></button>
                         <h1 className="text-sm font-bold uppercase tracking-widest text-white truncate w-full text-center">Cadastrar Rotina</h1>
                     </header>
@@ -1635,7 +1635,7 @@ Nota para metodo: pode ser 'Padrão', 'Drop Set', 'Rest-Pause', 'FST-7', 'Bi-set
 
             {isWorkoutSelectionOpen && (
                 <div className="fixed inset-0 bg-zinc-100 z-[100] flex flex-col max-w-md mx-auto">
-                    <header className="h-16 bg-zinc-900 flex items-center px-4 shadow-md flex-shrink-0 relative">
+                    <header className="h-14 bg-zinc-900 flex items-center px-4 shadow-md flex-shrink-0 relative">
                         <button onClick={() => setIsWorkoutSelectionOpen(false)} className="absolute left-2 p-2 text-white hover:bg-zinc-800 transition-colors z-10"><ArrowLeft className="w-6 h-6" /></button>
                         <h1 className="text-sm font-bold uppercase tracking-widest text-white truncate w-full text-center">Adicionar Treino</h1>
                     </header>
@@ -1675,7 +1675,7 @@ Nota para metodo: pode ser 'Padrão', 'Drop Set', 'Rest-Pause', 'FST-7', 'Bi-set
 
             {isExerciseSelectionOpen && (
                 <div className="fixed inset-0 bg-zinc-100 z-[100] flex flex-col max-w-md mx-auto">
-                    <header className="h-16 bg-zinc-900 flex items-center px-4 gap-2 flex-shrink-0 shadow-md">
+                    <header className="h-14 bg-zinc-900 flex items-center px-4 gap-2 flex-shrink-0 shadow-md">
                         <button onClick={() => setIsExerciseSelectionOpen(false)} className="p-2 -ml-2 text-white hover:bg-zinc-800 transition-colors"><ArrowLeft className="w-6 h-6" /></button>
                         <div className="flex-1 flex items-center bg-zinc-800/50 px-3 py-2 border border-zinc-700/50 focus-within:border-zinc-500 transition-colors">
                             <Search className="w-4 h-4 text-zinc-400 mr-2 shrink-0" />
@@ -1705,7 +1705,7 @@ Nota para metodo: pode ser 'Padrão', 'Drop Set', 'Rest-Pause', 'FST-7', 'Bi-set
 
             {isExerciseConfigOpen && selectedApiExercise && (
                 <div className="fixed inset-0 bg-white z-[110] flex flex-col max-w-md mx-auto">
-                    <header className="h-16 bg-zinc-900 flex items-center px-4 shadow-md flex-shrink-0 relative">
+                    <header className="h-14 bg-zinc-900 flex items-center px-4 shadow-md flex-shrink-0 relative">
                         <button onClick={() => { setIsExerciseConfigOpen(false); setIsExerciseSelectionOpen(true); setIsAdvancedMode(false); setAdvancedSets([{ id: 1, reps: '', carga: '', descanso: '', cadencia: '', metodo: '', notaBiomecanica: '' }]); }} className="absolute left-2 p-2 text-white hover:bg-zinc-800 transition-colors z-10"><ArrowLeft className="w-6 h-6" /></button>
                         <h1 className="text-sm font-bold uppercase tracking-widest text-white truncate w-full text-center">Configurar Exercício</h1>
                     </header>
