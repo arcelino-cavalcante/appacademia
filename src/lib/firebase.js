@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
+import { getAuth, browserLocalPersistence, setPersistence } from "firebase/auth";
+import { initializeFirestore, persistentLocalCache, persistentMultipleTabManager } from "firebase/firestore";
 
 const firebaseConfig = {
     apiKey: "AIzaSyAv3Edtsb8eNsZm3mGAo41dIDbAFw07hPk",
@@ -13,4 +13,13 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
-export const db = getFirestore(app);
+
+// 🛡️ O "Blindado" Offline (Arquitetura Local-First)
+// Força o Firebase Auth a manter o aluno logado no App persistentemente mesmmo sem internet
+setPersistence(auth, browserLocalPersistence).catch(console.error);
+
+// Ativa o cache local profundo (Multi-tab IndexedDB). 
+// Isso converte o App em Local-First: dados são puxados e lidos mesmo num subsolo de academia "Modo Avião"
+export const db = initializeFirestore(app, {
+    localCache: persistentLocalCache({ tabManager: persistentMultipleTabManager() })
+});

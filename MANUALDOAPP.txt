@@ -1,0 +1,61 @@
+🏋️ App Personal - Manual Técnico e Arquitetura
+Este documento serve como a Bússola de Desenvolvimento (Ground Truth) do aplicativo. Deve ser consultado sempre que formos planejar novas features ou realizar manutenções estruturais.
+
+🏗️ 1. Arquitetura Empregada
+O aplicativo foi concebido sob a tríade moderna do Web Development (MERN/Severless):
+
+Frontend Core: React.js (via Vite)
+Estilização: Tailwind CSS v4 (Paleta predominante: Zinc para um visual escuro industrial + toques de Orange para Destaque/Energia).
+Ícones e Vetores: Lucide React + SVGs Nativos (Zero imagens pesadas).
+Backend / BaaS: Firebase (Firestore NoSQL + Authentication).
+Plataforma alvo: PWA (Progressive Web App) Mobile-First / Responsivo.
+🗄️ 2. Estrutura do Banco de Dados (Firestore NoSQL)
+Para proteger o limite grátis do Firebase (Plano Spark), não usamos Arrays complexos e pesados nativos do Firebase num único documento. Desenvolvemos Coleções Relacionais Independentes.
+
+Coleções Principais:
+alunos: Guarda nome, email, senha, genero, dataInicio.
+rotinas: Fichas agregadoras. Guarda nome, tipo (semanal/livre), restrito e alunoId.
+treinos: Bloco do dia. Guarda nome, diaSemana e tem elo forte com o rotinaId.
+exercicios: Menor nó. Guarda métricas físicas com elo no treinoId e ordenação (ordem).
+feedbacks: Guarda o log pós-treino dos alunos com RPE (Esforço), duração total e métricas RM.
+bibliotecaTreinos e bibliotecaExercicios: Servidor global do Treinador para clonagem rápida.
+trainers: Onde guardamos senhas administrativas e as API Keys externas.
+⚡ 3. Engenharia de Otimização e Segurança
+O Código 
+App.jsx
+ possui duas lógicas fundamentais intransponíveis para prevenir sobrecarga de Leituras Firestore:
+
+Restrição Absoluta de View do Aluno: O useEffect que mapeia o Banco de Dados usa Queries Indexadas (query(collection, where('alunoId', '==', loggedStudent.id))). Isso faz com que nenhum aluno baixe os milhares de exercícios da academia global. Ele varre apenas de 10 a 50 execuções da cota para preencher o próprio cache.
+A "Lixeira Cascata Assíncrona": Funções como 
+handleDeleteRoutine
+ utilizam Promise.all() com array de exclusões. Quando uma rotina mestre é apagada, a função localiza e desintegra da Nuvem todos os Filhos (Treinos + Exercícios) num único pacote de dados mantendo o banco relacional imaculado (ausência de fantasmas).
+🛠️ 4. Fluxo Lógico e Telas (Componentes Vitais)
+A interface é desenhada no formato Single Page Application (SPA), regida pelos Estados do React. A variável Mestra do App é appMode (Login | Trainer | Student). A Variável Secundária é currentView para modularizar as subdivisões do app.
+
+Como o Treinador Atua (Modo Administrativo):
+Tem visão Panorâmica e acesso total de CRUD (Create/Read/Update/Delete).
+Modo Exercício Simples: Puxa campos rápidos de texto: "Séries", "Repetições", "Cargas", "Descanso". Opções nativas como Bi-Set, Drop-Set ganham relevância visual (Etiqueta preta com raio).
+Modo Exercício Avançado: Oculta inputs textuais e gera um Array Interno chamado advancedSets desenhando Matrizes Escalonadas por R.I.R e carga gradativa por série.
+Funcionalidade Drag and Drop: Biblioteca @hello-pangea/dnd. Usada via tags <DragDropContext><Droppable><Draggable>, permite agarrar e reposicionar visualmente a array de blocos atualizando seu indexador natural (ordem).
+Como o Aluno Atua (Modo Discente):
+Login minimalista. Ele enxerga sua própria aba de Rotinas. O app entende e exibe o que ele precisa fazer usando um cruzamento da URL do Treino com as propriedades do Banco.
+Modo Player Nativo: Quando clica em "Iniciar Treino", ativamos o <WorkoutPlayer />. Componente de tela-frenética com cronômetro isolado.
+Gera estatuto no Radar do Aluno na Tela do Mestre pelo salvamento automatizado do feedbacks collection.
+🚀 5. Empacotamento PWA, Updates e Deployment
+O App está fisicamente rodando graças a tríplice aliança Vite + Workbox + Github Pages.
+
+Sede de Arquivos (Domínio Oficial): https://arcelino-cavalcante.github.io/appacademia/
+Contrato PWA: Os alunos Instalam na página pelo botão nativo do iOS / Android. Possui diretrizes .webmanifest (display: standalone) para simular compilação em .apk / .ipa sem browser bar.
+Regra de Cache (Sobrescrita): O Workbox está forçosamente ativado como SkipWaiting e ClientsClaim.
+📚 Guia de Futuras Atualizações (Como mandar melhorias pra Nuvem):
+Sempre que desenvolvermos uma nova funcionalidade (ex: Pagamentos, IA de vídeo), executaremos esses passos no terminal:
+
+Passo 1: Certifique-se de que nada quebrou testando as alterações rodando na máquina local: npm run dev
+
+Passo 2: Cumpriu a missão? Dispare a Compilação Master e envie a maleta atualizada pro domínio: npm run deploy
+
+Passo 3: Conclua salvando a placa mãe do seu projeto atualizado pros servidores do GitHub guardarem com segurança: git add . git commit -m "Explicação da NOVA_FUNCIONALIDADE" git push origin main
+
+Passo 4: Em no máximo 3 minutos, todos os 50, 100, ou 1000 aparelhos celulares dos seus alunos sincronizarão pelo PWA e a tela inteira deles absorverá o nosso novo design, sem eles não precisarem ir na lojinha baixar atualização nenhuma. Magia pura!
+
+

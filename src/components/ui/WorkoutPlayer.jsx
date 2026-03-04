@@ -247,11 +247,11 @@ export default function WorkoutPlayer({ exercicios, onFinish, onClose }) {
                 <div className="text-xs font-bold uppercase tracking-widest text-zinc-400">
                     {currentIndex + 1} <span className="text-zinc-600">/</span> {flatSets.length} Series
                 </div>
-                <button onClick={() => { if (window.confirm('🚨 Tem certeza que deseja abortar o treino? Todo o log não salvo desta sessão será perdido.')) onClose(); }} className="p-2 text-zinc-400 hover:text-white transition-colors bg-zinc-800/50 rounded-full"><X className="w-4 h-4" /></button>
+                <button onClick={() => { confirmAction('🚨 Tem certeza que deseja abortar o treino? Todo o log não salvo desta sessão será perdido.', onClose); }} className="p-2 text-zinc-400 hover:text-white transition-colors bg-zinc-800/50 rounded-full"><X className="w-4 h-4" /></button>
             </div>
 
             {/* Video / Visual */}
-            <div className="w-full shrink-0 bg-black relative shadow-2xl" style={{ height: '35vh' }}>
+            <div className="w-full shrink-0 bg-black relative shadow-2xl mt-1" style={{ maxHeight: '40vh' }}>
                 {currentSet.video ? (
                     <video
                         src={currentSet.video.includes('raw.githubusercontent.com') ? currentSet.video.replace('raw.githubusercontent.com', 'cdn.jsdelivr.net/gh').replace('/main/', '@main/') : currentSet.video}
@@ -260,7 +260,8 @@ export default function WorkoutPlayer({ exercicios, onFinish, onClose }) {
                         muted
                         playsInline
                         preload="auto"
-                        className="w-full h-full object-cover opacity-80"
+                        className="w-full aspect-square object-contain"
+                        style={{ maxHeight: '40vh' }}
                     />
                 ) : (
                     <div className="w-full h-full flex items-center justify-center bg-zinc-800"><Dumbbell className="w-16 h-16 text-zinc-700" /></div>
@@ -342,7 +343,7 @@ export default function WorkoutPlayer({ exercicios, onFinish, onClose }) {
                         <p className="text-[10px] text-zinc-400 uppercase tracking-widest mb-3 leading-relaxed">Grave um vídeo de 15s realizando a série. Seu treinador poderá corrigir sua postura e técnica (Upload simulado localmente).</p>
                         <label className="w-full flex items-center justify-center gap-2 bg-zinc-700 text-white py-3 uppercase text-xs font-bold tracking-widest cursor-pointer rounded-md hover:bg-zinc-600 transition-colors">
                             <input type="file" accept="video/*" capture="environment" className="hidden" onChange={(e) => {
-                                if (e.target.files.length > 0) alert("Vídeo anexado com sucesso para envio posterior!");
+                                if (e.target.files.length > 0) showToast("Vídeo anexado com sucesso!");
                                 setMostrarVideoForm(false);
                             }} />
                             Gravar Vídeo Agora
