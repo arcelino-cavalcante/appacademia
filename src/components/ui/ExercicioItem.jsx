@@ -1,10 +1,9 @@
-import React from 'react';
 import { Repeat, Weight, Timer, Zap, GripVertical } from 'lucide-react';
+import { LazyVideo } from './LazyVideo';
 
-export function ExercicioItem({ nome, series, reps, carga, descanso, metodo, video, isAdvanced, advancedSets, rir, detalheMetodo, vincular, onEdit, onDelete, dragHandleProps }) {
+export function ExercicioItem({ nome, musculo, series, reps, carga, descanso, metodo, video, isAdvanced, advancedSets, rir, detalheMetodo, vincular, onEdit, onDelete, dragHandleProps }) {
     return (
         <div className="p-5 bg-white flex flex-col gap-3 border-b border-zinc-100 relative group">
-            {/* Absolute positioning for actions so they don't break layout if not hovered/active on mobile, but here just right-aligned */}
             <div className="flex items-start gap-4">
                 {dragHandleProps && (
                     <div {...dragHandleProps} className="mt-4 -ml-2 p-1 text-zinc-300 hover:text-zinc-500 cursor-grab active:cursor-grabbing flex-shrink-0">
@@ -13,15 +12,7 @@ export function ExercicioItem({ nome, series, reps, carga, descanso, metodo, vid
                 )}
                 {video ? (
                     <div className="w-16 h-16 flex-shrink-0 bg-zinc-100 border border-zinc-900 overflow-hidden">
-                        <video
-                            autoPlay
-                            loop
-                            muted
-                            playsInline
-                            preload="metadata"
-                            className="w-full h-full object-cover"
-                            src={video.includes('raw.githubusercontent.com') ? video.replace('raw.githubusercontent.com', 'cdn.jsdelivr.net/gh').replace('/main/', '@main/') : video}
-                        />
+                        <LazyVideo src={video} muscle={musculo} className="w-full h-full" />
                     </div>
                 ) : (
                     <div className="w-2 h-16 flex-shrink-0 bg-zinc-900" />

@@ -39,6 +39,7 @@ import { ListItem } from './components/ui/ListItem';
 import { ExercicioItem } from './components/ui/ExercicioItem';
 import WorkoutPlayer from './components/ui/WorkoutPlayer';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { LazyVideo } from './components/ui/LazyVideo';
 
 const AvatarMasculino = ({ className }) => (
     <svg viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
@@ -89,85 +90,8 @@ const optimizeVideoUrl = (url) => {
     return url;
 };
 
-// 🚀 Componente Anti-Crash: Thumbnail Estático em Memória (Canvas)
-const thumbnailCache = new Map();
-
-const generateVideoThumbnail = (videoUrl) => {
-    return new Promise((resolve) => {
-        if (thumbnailCache.has(videoUrl)) {
-            resolve(thumbnailCache.get(videoUrl));
-            return;
-        }
-        const video = document.createElement('video');
-        video.src = videoUrl;
-        video.crossOrigin = 'anonymous';
-        video.muted = true;
-        video.playsInline = true;
-
-        video.addEventListener('loadeddata', () => {
-            video.currentTime = 0.1;
-        });
-
-        video.addEventListener('seeked', () => {
-            try {
-                const canvas = document.createElement('canvas');
-                canvas.width = 160;
-                canvas.height = 160;
-                const ctx = canvas.getContext('2d');
-                ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-                const dataUrl = canvas.toDataURL('image/jpeg', 0.5); // Alta compressão, leve para RAM
-                thumbnailCache.set(videoUrl, dataUrl);
-                resolve(dataUrl);
-            } catch (e) {
-                resolve(null);
-            } finally {
-                video.pause();
-                video.removeAttribute('src');
-                video.load();
-            }
-        });
-
-        video.addEventListener('error', () => resolve(null));
-    });
-};
-
-const LazyVideo = ({ src, className, style }) => {
-    const [thumb, setThumb] = useState(thumbnailCache.get(optimizeVideoUrl(src)));
-    const containerRef = useRef(null);
-
-    useEffect(() => {
-        if (thumb) return;
-
-        const observer = new IntersectionObserver(([entry]) => {
-            if (entry.isIntersecting) {
-                observer.disconnect();
-                generateVideoThumbnail(optimizeVideoUrl(src)).then(url => {
-                    if (url) setThumb(url);
-                });
-            }
-        }, { rootMargin: '200px' });
-
-        if (containerRef.current) observer.observe(containerRef.current);
-        return () => observer.disconnect();
-    }, [src, thumb]);
-
-    return (
-        <div ref={containerRef} className={className} style={{ ...style, position: 'relative', overflow: 'hidden' }}>
-            {thumb ? (
-                <img src={thumb} className="w-full h-full object-cover" alt="Exercício" style={{ animation: 'eliteFadeIn 0.3s ease-out' }} />
-            ) : (
-                <div style={{
-                    position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    background: 'linear-gradient(110deg, #27272a 8%, #3f3f46 18%, #27272a 33%)',
-                    backgroundSize: '200% 100%',
-                    animation: 'shimmer 1.5s infinite linear',
-                }}>
-                    <Dumbbell style={{ width: 20, height: 20, color: '#52525b' }} />
-                </div>
-            )}
-        </div>
-    );
-};
+// 🚀 Componente Anti-Crash: Estratégia de Ícones Inteligentes (Zero Video na Listagem)
+// Agora centralizado em src/components/ui/LazyVideo.jsx
 
 export default function App() {
     // --- Estados de Controle do Aplicativo (Login/Modos) ---
@@ -2093,7 +2017,7 @@ Nota para metodo: pode ser 'Padrão', 'Drop Set', 'Rest-Pause', 'FST-7', 'Bi-set
                                 <div key={ex.id || idx} className="p-4 border-b border-zinc-200 bg-white flex items-center gap-4 cursor-pointer hover:bg-zinc-50 transition-colors" onClick={() => { setSelectedApiExercise(ex); setIsExerciseSelectionOpen(false); setIsExerciseConfigOpen(true); }}>
                                     {(ex.video || ex.mp4 || ex.url) ? (
                                         <div className="relative w-16 h-16 flex-shrink-0 border border-zinc-900 bg-zinc-800">
-                                            <LazyVideo src={ex.video || ex.mp4 || ex.url} className="w-full h-full" style={{ objectFit: 'cover' }} />
+                                            <LazyVideo src={ex.video || ex.mp4 || ex.url} muscle={ex.musculo || ex.bodyPart || ex.target || ex.muscle || ex.grupo_muscular || ex.categoria} className="w-full h-full" style={{ objectFit: 'cover' }} />
                                         </div>
                                     ) : <div className="w-16 h-16 bg-zinc-100 border border-zinc-900 flex-shrink-0 flex items-center justify-center"><Dumbbell className="w-6 h-6 text-zinc-300" /></div>}
                                     <div className="flex flex-col"><span className="font-semibold text-zinc-900 uppercase text-xs leading-relaxed">{ex.name || ex.nome}</span><span className="text-[10px] text-zinc-500 uppercase font-bold tracking-widest mt-1">{getCategory(ex)}</span></div>
@@ -2112,10 +2036,9 @@ Nota para metodo: pode ser 'Padrão', 'Drop Set', 'Rest-Pause', 'FST-7', 'Bi-set
                         <div className="flex-1 overflow-y-auto pb-24">
                             <div className="bg-zinc-100 border-b border-zinc-200 mt-2">
                                 {(selectedApiExercise.video || selectedApiExercise.mp4 || selectedApiExercise.url) ? (
-                                    <LazyVideo
-                                        src={selectedApiExercise.video || selectedApiExercise.mp4 || selectedApiExercise.url}
-                                        className="w-full aspect-square bg-black"
-                                        style={{ objectFit: 'contain' }}
+                                    <video
+                                        src={optimizeVideoUrl(selectedApiExercise.video || selectedApiExercise.mp4 || selectedApiExercise.url)}
+                                        className="w-full aspect-square bg-black object-contain"
                                         autoPlay
                                         loop
                                         muted
