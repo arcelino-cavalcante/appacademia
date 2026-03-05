@@ -2054,7 +2054,14 @@ Nota para metodo: pode ser 'Padrão', 'Drop Set', 'Rest-Pause', 'FST-7', 'Bi-set
                                 return exName.includes(searchTerm.toLowerCase()) && (selectedCategory === 'Todas' || exCat === selectedCategory);
                             }).slice(0, 50).map((ex, idx) => (
                                 <div key={idx} className="p-4 border-b border-zinc-200 bg-white flex items-center gap-4 cursor-pointer hover:bg-zinc-50 transition-colors" onClick={() => { setSelectedApiExercise(ex); setIsExerciseSelectionOpen(false); setIsExerciseConfigOpen(true); }}>
-                                    {(ex.video || ex.mp4 || ex.url) ? <div className="w-16 h-16 border border-zinc-900 bg-zinc-800 flex-shrink-0 flex items-center justify-center"><Play className="w-6 h-6 text-zinc-400 fill-zinc-400" /></div> : <div className="w-16 h-16 bg-zinc-100 border border-zinc-900 flex-shrink-0 flex items-center justify-center"><Dumbbell className="w-6 h-6 text-zinc-300" /></div>}
+                                    {(ex.video || ex.mp4 || ex.url) ? (
+                                        <div className="relative w-16 h-16 flex-shrink-0 border border-zinc-900 bg-zinc-800">
+                                            <LazyVideo src={(ex.video || ex.mp4 || ex.url) + '#t=0.1'} className="w-full h-full" style={{ objectFit: 'cover' }} muted playsInline />
+                                            <div className="absolute inset-0 flex items-center justify-center bg-black/20 pointer-events-none">
+                                                <Play className="w-6 h-6 text-white/80 fill-white/80" />
+                                            </div>
+                                        </div>
+                                    ) : <div className="w-16 h-16 bg-zinc-100 border border-zinc-900 flex-shrink-0 flex items-center justify-center"><Dumbbell className="w-6 h-6 text-zinc-300" /></div>}
                                     <div className="flex flex-col"><span className="font-semibold text-zinc-900 uppercase text-xs leading-relaxed">{ex.name || ex.nome}</span><span className="text-[10px] text-zinc-500 uppercase font-bold tracking-widest mt-1">{getCategory(ex)}</span></div>
                                 </div>
                             ))}
