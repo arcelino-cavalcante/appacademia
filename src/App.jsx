@@ -89,44 +89,81 @@ const optimizeVideoUrl = (url) => {
     return url;
 };
 
-// 🚀 Componente de Vídeo com Lazy Loading (IntersectionObserver)
-const LazyVideo = ({ src, className, style, ...props }) => {
+// 🚀 Componente Anti-Crash: Thumbnail Estático em Memória (Canvas)
+const thumbnailCache = new Map();
+
+const generateVideoThumbnail = (videoUrl) => {
+    return new Promise((resolve) => {
+        if (thumbnailCache.has(videoUrl)) {
+            resolve(thumbnailCache.get(videoUrl));
+            return;
+        }
+        const video = document.createElement('video');
+        video.src = videoUrl;
+        video.crossOrigin = 'anonymous';
+        video.muted = true;
+        video.playsInline = true;
+
+        video.addEventListener('loadeddata', () => {
+            video.currentTime = 0.1;
+        });
+
+        video.addEventListener('seeked', () => {
+            try {
+                const canvas = document.createElement('canvas');
+                canvas.width = 160;
+                canvas.height = 160;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+                const dataUrl = canvas.toDataURL('image/jpeg', 0.5); // Alta compressão, leve para RAM
+                thumbnailCache.set(videoUrl, dataUrl);
+                resolve(dataUrl);
+            } catch (e) {
+                resolve(null);
+            } finally {
+                video.pause();
+                video.removeAttribute('src');
+                video.load();
+            }
+        });
+
+        video.addEventListener('error', () => resolve(null));
+    });
+};
+
+const LazyVideo = ({ src, className, style }) => {
+    const [thumb, setThumb] = useState(thumbnailCache.get(optimizeVideoUrl(src)));
     const containerRef = useRef(null);
-    const [isVisible, setIsVisible] = useState(false);
-    const [isLoaded, setIsLoaded] = useState(false);
 
     useEffect(() => {
-        const el = containerRef.current;
-        if (!el) return;
-        const observer = new IntersectionObserver(
-            ([entry]) => { if (entry.isIntersecting) { setIsVisible(true); observer.disconnect(); } },
-            { rootMargin: '200px' }
-        );
-        observer.observe(el);
+        if (thumb) return;
+
+        const observer = new IntersectionObserver(([entry]) => {
+            if (entry.isIntersecting) {
+                observer.disconnect();
+                generateVideoThumbnail(optimizeVideoUrl(src)).then(url => {
+                    if (url) setThumb(url);
+                });
+            }
+        }, { rootMargin: '200px' });
+
+        if (containerRef.current) observer.observe(containerRef.current);
         return () => observer.disconnect();
-    }, []);
+    }, [src, thumb]);
 
     return (
         <div ref={containerRef} className={className} style={{ ...style, position: 'relative', overflow: 'hidden' }}>
-            {!isVisible || !isLoaded ? (
+            {thumb ? (
+                <img src={thumb} className="w-full h-full object-cover" alt="Exercício" style={{ animation: 'eliteFadeIn 0.3s ease-out' }} />
+            ) : (
                 <div style={{
                     position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center',
                     background: 'linear-gradient(110deg, #27272a 8%, #3f3f46 18%, #27272a 33%)',
                     backgroundSize: '200% 100%',
                     animation: 'shimmer 1.5s infinite linear',
                 }}>
-                    <Dumbbell style={{ width: 32, height: 32, color: '#52525b' }} />
-                    <style>{`@keyframes shimmer { to { background-position-x: -200%; } }`}</style>
+                    <Dumbbell style={{ width: 20, height: 20, color: '#52525b' }} />
                 </div>
-            ) : null}
-            {isVisible && (
-                <video
-                    src={optimizeVideoUrl(src)}
-                    onLoadedData={() => setIsLoaded(true)}
-                    className="w-full h-full"
-                    style={{ objectFit: style?.objectFit || 'contain', opacity: isLoaded ? 1 : 0, transition: 'opacity 0.3s ease' }}
-                    {...props}
-                />
             )}
         </div>
     );
