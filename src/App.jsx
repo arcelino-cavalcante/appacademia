@@ -709,8 +709,8 @@ export default function App() {
                             </div>
                         )}
                     </div>
-                    <EliteToast />
-                    <EliteConfirm />
+                    {renderEliteToast()}
+                    {renderEliteConfirm()}
                 </div>
             </div>
         );
@@ -1026,8 +1026,8 @@ export default function App() {
                             }}
                         />
                     )}
-                    <EliteToast />
-                    <EliteConfirm />
+                    {renderEliteToast()}
+                    {renderEliteConfirm()}
                 </div>
             </div>
         );
