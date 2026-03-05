@@ -245,8 +245,8 @@ export default function App() {
         setConfirmDialog({ visible: true, message, onConfirm });
     };
 
-    // --- COMPONENTES ELITE DE NOTIFICAÇÃO ---
-    const EliteToast = () => {
+    // --- RENDERIZADORES ELITE DE NOTIFICAÇÃO ---
+    const renderEliteToast = () => {
         if (!toast.visible) return null;
         const isSuccess = toast.type === 'success';
         return (
@@ -315,7 +315,7 @@ export default function App() {
         );
     };
 
-    const EliteConfirm = () => {
+    const renderEliteConfirm = () => {
         if (!confirmDialog.visible) return null;
         return (
             <div
@@ -2180,8 +2180,8 @@ Nota para metodo: pode ser 'Padrão', 'Drop Set', 'Rest-Pause', 'FST-7', 'Bi-set
                         <div className="p-4 bg-white border-t border-zinc-200 mt-auto flex-shrink-0 pb-8"><button onClick={handleSaveExerciseClick} className="w-full bg-zinc-900 text-white py-4 flex items-center justify-center gap-2 hover:bg-zinc-800 transition-colors uppercase font-bold text-xs tracking-widest shadow-md"><Check className="w-5 h-5" /> Salvar no Treino</button></div>
                     </div>
                 )}
-                <EliteToast />
-                <EliteConfirm />
+                {renderEliteToast()}
+                {renderEliteConfirm()}
             </div>
         </div>
     );
