@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { auth, db } from './lib/firebase';
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged } from 'firebase/auth';
 import { collection, doc, setDoc, deleteDoc, getDocs, getDoc, query, where } from 'firebase/firestore';
@@ -87,6 +87,49 @@ const optimizeVideoUrl = (url) => {
             .replace('/main/', '@main/');
     }
     return url;
+};
+
+// 🚀 Componente de Vídeo com Lazy Loading (IntersectionObserver)
+const LazyVideo = ({ src, className, style, ...props }) => {
+    const containerRef = useRef(null);
+    const [isVisible, setIsVisible] = useState(false);
+    const [isLoaded, setIsLoaded] = useState(false);
+
+    useEffect(() => {
+        const el = containerRef.current;
+        if (!el) return;
+        const observer = new IntersectionObserver(
+            ([entry]) => { if (entry.isIntersecting) { setIsVisible(true); observer.disconnect(); } },
+            { rootMargin: '200px' }
+        );
+        observer.observe(el);
+        return () => observer.disconnect();
+    }, []);
+
+    return (
+        <div ref={containerRef} className={className} style={{ ...style, position: 'relative', overflow: 'hidden' }}>
+            {!isVisible || !isLoaded ? (
+                <div style={{
+                    position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    background: 'linear-gradient(110deg, #27272a 8%, #3f3f46 18%, #27272a 33%)',
+                    backgroundSize: '200% 100%',
+                    animation: 'shimmer 1.5s infinite linear',
+                }}>
+                    <Dumbbell style={{ width: 32, height: 32, color: '#52525b' }} />
+                    <style>{`@keyframes shimmer { to { background-position-x: -200%; } }`}</style>
+                </div>
+            ) : null}
+            {isVisible && (
+                <video
+                    src={optimizeVideoUrl(src)}
+                    onLoadedData={() => setIsLoaded(true)}
+                    className="w-full h-full"
+                    style={{ objectFit: style?.objectFit || 'contain', opacity: isLoaded ? 1 : 0, transition: 'opacity 0.3s ease' }}
+                    {...props}
+                />
+            )}
+        </div>
+    );
 };
 
 export default function App() {
@@ -2011,7 +2054,7 @@ Nota para metodo: pode ser 'Padrão', 'Drop Set', 'Rest-Pause', 'FST-7', 'Bi-set
                                 return exName.includes(searchTerm.toLowerCase()) && (selectedCategory === 'Todas' || exCat === selectedCategory);
                             }).slice(0, 50).map((ex, idx) => (
                                 <div key={idx} className="p-4 border-b border-zinc-200 bg-white flex items-center gap-4 cursor-pointer hover:bg-zinc-50 transition-colors" onClick={() => { setSelectedApiExercise(ex); setIsExerciseSelectionOpen(false); setIsExerciseConfigOpen(true); }}>
-                                    {(ex.video || ex.mp4 || ex.url) ? <video src={ex.video || ex.mp4 || ex.url} className="w-16 h-16 object-cover border border-zinc-900 flex-shrink-0 bg-zinc-100" muted loop playsInline /> : <div className="w-16 h-16 bg-zinc-100 border border-zinc-900 flex-shrink-0 flex items-center justify-center"><Dumbbell className="w-6 h-6 text-zinc-300" /></div>}
+                                    {(ex.video || ex.mp4 || ex.url) ? <LazyVideo src={ex.video || ex.mp4 || ex.url} className="w-16 h-16 flex-shrink-0 border border-zinc-900 bg-zinc-800" style={{ objectFit: 'cover' }} muted loop playsInline autoPlay /> : <div className="w-16 h-16 bg-zinc-100 border border-zinc-900 flex-shrink-0 flex items-center justify-center"><Dumbbell className="w-6 h-6 text-zinc-300" /></div>}
                                     <div className="flex flex-col"><span className="font-semibold text-zinc-900 uppercase text-xs leading-relaxed">{ex.name || ex.nome}</span><span className="text-[10px] text-zinc-500 uppercase font-bold tracking-widest mt-1">{getCategory(ex)}</span></div>
                                 </div>
                             ))}
@@ -2028,9 +2071,10 @@ Nota para metodo: pode ser 'Padrão', 'Drop Set', 'Rest-Pause', 'FST-7', 'Bi-set
                         <div className="flex-1 overflow-y-auto pb-24">
                             <div className="bg-zinc-100 border-b border-zinc-200 mt-2">
                                 {(selectedApiExercise.video || selectedApiExercise.mp4 || selectedApiExercise.url) ? (
-                                    <video
-                                        src={optimizeVideoUrl(selectedApiExercise.video || selectedApiExercise.mp4 || selectedApiExercise.url)}
-                                        className="w-full aspect-square object-contain bg-black"
+                                    <LazyVideo
+                                        src={selectedApiExercise.video || selectedApiExercise.mp4 || selectedApiExercise.url}
+                                        className="w-full aspect-square bg-black"
+                                        style={{ objectFit: 'contain' }}
                                         autoPlay
                                         loop
                                         muted
