@@ -790,7 +790,7 @@ export default function App() {
 
                     <main className="w-full flex flex-col min-h-[calc(100vh-8rem)]">
                         {studentView === 'rotinas' && (
-                            <>
+                            <div key="student-rotinas" className="w-full flex flex-col flex-1">
                                 <div className="p-5 bg-white border-b border-zinc-200">
                                     <h2 className="text-lg font-bold text-zinc-900 uppercase tracking-wide">Olá, {loggedStudent?.nome}</h2>
                                     <p className="text-xs text-zinc-500 font-bold uppercase tracking-widest mt-1">Aqui estão seus programas de treino</p>
@@ -801,7 +801,7 @@ export default function App() {
                                 {rotinas.filter(r => r.alunoId === loggedStudent?.id).length === 0 && (
                                     <div className="p-10 text-center text-xs text-zinc-400 font-bold uppercase tracking-widest">Nenhuma rotina atribuída a você.</div>
                                 )}
-                            </>
+                            </div>
                         )}
 
                         {studentView === 'treinos' && treinos.filter(t => t.rotinaId === studentSelectedRotina?.id).map(treino => {
@@ -820,7 +820,7 @@ export default function App() {
                         })}
 
                         {studentView === 'exercicios' && (
-                            <>
+                            <div key="student-exercicios" className="w-full flex flex-col flex-1 overflow-hidden">
                                 <div className="flex-1 overflow-y-auto">
                                     <div className="p-4 bg-zinc-900 border-b border-zinc-800 flex justify-between items-center shadow-lg sticky top-0 z-30">
                                         <div className="flex flex-col flex-1 truncate pr-2">
@@ -844,7 +844,7 @@ export default function App() {
                                         <Check className="w-5 h-5" /> Concluir Treino
                                     </button>
                                 </div>
-                            </>
+                            </div>
                         )}
 
                         {studentView === 'ajustes' && (
